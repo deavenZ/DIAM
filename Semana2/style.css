@@ -1,22 +1,32 @@
+* {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 body {
+    margin: 0;
     background-image: url("bg.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-h1 {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-nav {
+.navheader {
     background-color: #18945c;
     color: floralwhite;
 }
 
+.tablesection {
+    background-color: #18945c;
+}
+
 table {
+    background-color: forestgreen;
+    color: #101010;
+}
+
+footer {
     background-color: gold;
-    color: darkgrey;
 }
 
 .navlink:link, .navlink:visited {
