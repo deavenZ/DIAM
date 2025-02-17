@@ -1,20 +1,36 @@
 body {
-    background-image: url("amongus.gif");
-    background-size: 100%;
+    background-image: url("bg.png");
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
 }
 
 h1 {
-    background-color: aquamarine;
-    color: ivory;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 nav {
-    background-color: black;
+    background-color: #18945c;
     color: floralwhite;
 }
 
 table {
     background-color: gold;
     color: darkgrey;
+}
+
+.navlink:link, .navlink:visited {
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.navlink:hover, .navlink:active {
+    background-color: orange;
+}
+
+.imagelink:hover, .imagelink:active {
+    background-color: transparent;
 }
