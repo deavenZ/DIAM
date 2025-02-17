@@ -4,11 +4,11 @@
 }
 
 body {
-    margin: 0;
     background-image: url("newbg.jpeg");
     background-size: cover;
-    background-position: center;
+    background-position:initial;
     background-repeat: no-repeat;
+    margin: 0;
 }
 
 .navheader {
@@ -16,12 +16,19 @@ body {
     color: floralwhite;
 }
 
+.midsection {
+    background-image: url("bg4.jpg");
+    background-size: contain;
+    background-position: center;
+    background-repeat: repeat;
+}
+
 .tablesection {
     background-color: #18945c;
 }
 
 table {
-    background-color: forestgreen;
+    background-color:lightgray;
     color: #101010;
 }
 
