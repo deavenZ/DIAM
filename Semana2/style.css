@@ -1,0 +1,20 @@
+body {
+    background-image: url("amongus.gif");
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+h1 {
+    background-color: aquamarine;
+    color: ivory;
+}
+
+nav {
+    background-color: black;
+    color: floralwhite;
+}
+
+table {
+    background-color: gold;
+    color: darkgrey;
+}

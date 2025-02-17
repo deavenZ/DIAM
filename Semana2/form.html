@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <br>
+        <center>
+            <nav>
+                <a href="ex1.html"><button>Pagina Inicial</button></a> &emsp;
+                <a href="form.html"><button>Formulário de Voluntariado</button></a>
+            </nav>
+        </center>
+        <center>
+            <header>
+                <h1> Candidatura a Voluntariado</h1>
+            </header>
+        </center>
+    </head>
+    <body>
+        <center>
+            <form action="accepted.html" method="get">
+                Nome: <br><br><input type="text" name="Nome" placeholder="Primeiro e Ultimo Nome" required autocomplete="off"><br><br>
+                Contacto: <br><br><input type="tel" name="Contact" placeholder="9********" pattern="[9]{1}[0-9]{8}" required autocomplete="off"><br><br>
+                Datas de tarefas de voluntariado: <br><br><input list="datas" required><br><br>
+                <datalist id="datas">
+                    <option value="21/8/2025 das 10h ás 14h">
+                    <option value="21/8/2025 das 14h ás 18h">
+                    <option value="22/8/2025 das 14h ás 18h">
+                    <option value="23/8/2025 das 10h ás 14h">
+                    <option value="24/8/2025 das 14h ás 18h">
+                </datalist>
+                <p> <input type="submit" value="Enviar"> </p>
+            </form>
+        </center>
+    </body>
+</html>
