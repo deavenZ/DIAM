@@ -1,37 +1,48 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="style.css">
-    </head>
-    <body>
-        <br>
-        <center>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <center>
+        <header>
+            <br>
+            <h1> Candidatura a Voluntariado</h1>
             <nav>
-                <a href="home.html"><button>Pagina Inicial</button></a> &emsp;
-                <a href="form.html"><button>Formulário de Voluntariado</button></a>
+                <a href="home.html" class="navlink">Pagina Inicial</a>
+                <a href="form.html" class="navlink">Formulário de Voluntariado</a>
             </nav>
-        </center>
-        <center>
-            <header>
-                <h1> Candidatura a Voluntariado</h1>
-            </header>
-        </center>
-        <center>
-            <form action="accepted.html" method="get">
-                Nome: <br><br><input type="text" name="Nome" placeholder="Primeiro e Ultimo Nome" required autocomplete="off"><br><br>
-                Contacto: <br><br><input type="tel" name="Contact" placeholder="9********" pattern="[9]{1}[0-9]{8}" required autocomplete="off"><br><br>
-                Datas de tarefas de voluntariado: <br><br><input list="datas" required><br><br>
-                <datalist id="datas">
-                    <option value="21/8/2025 das 10h ás 14h">
-                    <option value="21/8/2025 das 14h ás 18h">
-                    <option value="22/8/2025 das 14h ás 18h">
-                    <option value="23/8/2025 das 10h ás 14h">
-                    <option value="24/8/2025 das 14h ás 18h">
-                </datalist>
-                <p> <input type="submit" value="Enviar"> </p>
-            </form>
-        </center>
-    </body>
+        </header>
+        <br>
+        <form action="accepted.html" method="get">
+            Nome: <br><br><input type="text" name="Nome" placeholder="Primeiro e Ultimo Nome" required
+                autocomplete="off"><br><br>
+            Contacto: <br><br><input type="tel" name="Contact" placeholder="9********" pattern="[9]{1}[0-9]{8}" required
+                autocomplete="off"><br><br>
+            Datas de tarefas de voluntariado: <br><br><input list="datas" required><br><br>
+            <datalist id="datas">
+                <option value="21/8/2025 das 10h ás 14h">
+                <option value="21/8/2025 das 14h ás 18h">
+                <option value="22/8/2025 das 14h ás 18h">
+                <option value="23/8/2025 das 10h ás 14h">
+                <option value="24/8/2025 das 14h ás 18h">
+            </datalist>
+            Comentário: <br><br><textarea placeholder="Escreva aqui o seu comentário...." id="comment"></textarea>
+            <p> <button type="button" onclick = "verifyComment()" class="inputbuttons"> Validar </button> </p><br>
+            <p> <input type="submit" value="Enviar" class="inputbuttons"> </p>
+        </form>
+        <footer>
+            <br>
+            <p> E-mail: <a href="mailto:festivalvilardemouros@gmail.com"> festivalvilardemouros@gmail.com </a>
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Telefone: <a href="tel:217696969">
+                    217696969 </a></p>
+            <br>
+        </footer>
+    </center>
+</body>
+
 </html>

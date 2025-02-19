@@ -4,14 +4,16 @@
 }
 
 body {
-    background-image: url("newbg.jpeg");
-    background-size: cover;
-    background-position:initial;
-    background-repeat: no-repeat;
+    background-image: url("bg3.jpg");
+    background-size: contain;
+    background-position: initial;
+    background-repeat: repeat;
     margin: 0;
+    position: relative;
+    min-height: 100vh;
 }
 
-.navheader {
+header {
     background-color: #18945c;
     color: floralwhite;
 }
@@ -25,18 +27,23 @@ body {
 
 .tablesection {
     background-color: #18945c;
+    padding-bottom: 80px;
 }
 
 table {
-    background-color:lightgray;
+    background-color: lightgray;
     color: #101010;
 }
 
 footer {
     background-color: gold;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 
-.navlink:link, .navlink:visited {
+.navlink:link,
+.navlink:visited {
     color: white;
     padding: 14px 25px;
     text-align: center;
@@ -44,10 +51,26 @@ footer {
     display: inline-block;
 }
 
-.navlink:hover, .navlink:active {
+.navlink:hover,
+.navlink:active {
     background-color: orange;
 }
 
-.imagelink:hover, .imagelink:active {
+.imagelink:hover,
+.imagelink:active {
     background-color: transparent;
+}
+
+textarea {
+    width: 400px;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    resize: none;
+}
+
+.inputbuttons {
+    width: 80px;
+    height: 30px;
 }
