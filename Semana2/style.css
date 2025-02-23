@@ -4,13 +4,30 @@
 }
 
 body {
-    background-image: url("bg3.jpg");
-    background-size: contain;
+    background-image: url(slideshowbg.jpg);
+    background-size: cover;
     background-position: initial;
     background-repeat: repeat;
     margin: 0;
     position: relative;
     min-height: 100vh;
+}
+
+.formbody {
+    background-image: url("vmfoto1.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.acceptedbody {
+    background-color: #18945c;
+    background-image: none;
+    vertical-align: middle;    
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
 }
 
 header {
@@ -36,10 +53,14 @@ table {
 }
 
 footer {
-    background-color: gold;
+    background-color: #18945c;
     position: absolute;
     bottom: 0;
     width: 100%;
+}
+
+.footerlink {
+    color: #87CEEB;
 }
 
 .navlink:link,
@@ -61,6 +82,10 @@ footer {
     background-color: transparent;
 }
 
+figcaption {
+    color: white;
+}
+
 textarea {
     width: 400px;
     height: 100px;
@@ -70,7 +95,63 @@ textarea {
     resize: none;
 }
 
+.warningspan {
+    color: red;
+    font-size: 18px; 
+    display: none;
+    text-shadow: 1px 1px 0 black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black;
+}
+
 .inputbuttons {
     width: 80px;
     height: 30px;
+}
+
+.formtext {
+    color: white;
+}
+
+.slideshowsection {
+    border-radius: 10px;
+    position: relative;
+}
+
+.imageSlide {
+    border:6px solid #18945c;
+    width: 1000px;
+    height: 700px;
+}
+
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 40%;
+    width: auto;
+    padding: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 0 3px 3px 0;
+  }
+  
+.next {
+    right: 430px;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+  
+.backbutton:link, .backbutton:visited {
+    color: black; 
+    background-color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.backbutton:hover, .backbutton:active {
+    background-color: lightblue;
 }

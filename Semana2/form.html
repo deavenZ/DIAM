@@ -4,10 +4,12 @@
 
 <head>
     <meta charset="utf-8">
+    <title> Formulário de Voluntariado </title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="script.js"></script>
 </head>
 
-<body>
+<body class="formbody">
     <center>
         <header>
             <br>
@@ -18,12 +20,12 @@
             </nav>
         </header>
         <br>
-        <form action="accepted.html" method="get">
-            Nome: <br><br><input type="text" name="Nome" placeholder="Primeiro e Ultimo Nome" required
+        <form action="accepted.html" method="get" onsubmit="return verifySubmit()">
+            <p class="formtext">Nome: </p> <br><input type="text" name="Nome" placeholder="Primeiro e Ultimo Nome" required
                 autocomplete="off"><br><br>
-            Contacto: <br><br><input type="tel" name="Contact" placeholder="9********" pattern="[9]{1}[0-9]{8}" required
+            <p class="formtext">Contacto: </p><br><input type="tel" name="Contact" placeholder="9********" pattern="[9]{1}[0-9]{8}" required
                 autocomplete="off"><br><br>
-            Datas de tarefas de voluntariado: <br><br><input list="datas" required><br><br>
+            <p class="formtext">Datas de tarefas de voluntariado: </p><br><input list="datas" name="datas" required><br><br>
             <datalist id="datas">
                 <option value="21/8/2025 das 10h ás 14h">
                 <option value="21/8/2025 das 14h ás 18h">
@@ -31,14 +33,15 @@
                 <option value="23/8/2025 das 10h ás 14h">
                 <option value="24/8/2025 das 14h ás 18h">
             </datalist>
-            Comentário: <br><br><textarea placeholder="Escreva aqui o seu comentário...." id="comment"></textarea>
-            <p> <button type="button" onclick = "verifyComment()" class="inputbuttons"> Validar </button> </p><br>
-            <p> <input type="submit" value="Enviar" class="inputbuttons"> </p>
+            <p class="formtext"> Comentário: </p><br><textarea placeholder="Escreva aqui o seu comentário...." id="comment"></textarea>
+            <p> <button type="button" onclick = "verifyComment()" class="inputbuttons"> Validar </button> </p>
+            <span id="commentWarning" class="warningspan"></span>
+            <p> <input type="submit" value="Enviar" id="submit" class="inputbuttons"> </p>
         </form>
         <footer>
             <br>
-            <p> E-mail: <a href="mailto:festivalvilardemouros@gmail.com"> festivalvilardemouros@gmail.com </a>
-                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Telefone: <a href="tel:217696969">
+            <p style="color: white;"> E-mail: <a href="mailto:festivalvilardemouros@gmail.com" class="footerlink"> festivalvilardemouros@gmail.com </a>
+                &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; Telefone: <a href="tel:217696969" class="footerlink">
                     217696969 </a></p>
             <br>
         </footer>
