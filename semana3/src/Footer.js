@@ -8,7 +8,8 @@ function Footer() {
             backgroundColor: "#18945c",
             position: "absolute",
             bottom: 0,
-            width: "100%"
+            width: "100%",
+            padding: "20px"
     }
 
     return (
