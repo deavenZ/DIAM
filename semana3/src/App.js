@@ -1,7 +1,9 @@
 import './App.css';
 import Header from './Header';
-import ImageSection from './ImageSection';
-import TableSection from './TableSection';
+import ImageSection from './Image';
+import TableSection from './Table';
+import SlideshowSection from './Slideshow';
+import FooterSection from './Footer';
 
 function App() {
   return (
@@ -9,6 +11,8 @@ function App() {
       <Header/>
       <ImageSection/>
       <TableSection/>
+      <SlideshowSection/>
+      <FooterSection/>
     </div>
   );
 }

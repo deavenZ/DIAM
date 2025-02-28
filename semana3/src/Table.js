@@ -1,6 +1,6 @@
-import "./TableSection.css"
+import "./Table.css"
 
-function TableSection() {
+function Table() {
     return (
         <section>
             <br></br>
@@ -145,4 +145,4 @@ function TableSection() {
     );
 }
 
-export default TableSection;
+export default Table;

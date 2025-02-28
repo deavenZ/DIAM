@@ -1,12 +1,10 @@
 .App {
-  box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
   background-image: url(images/slideshowbg.jpg);
   background-size: cover;
   background-position: initial;
   background-repeat: repeat;
-  margin: 0;
   position: relative;
   min-height: 100vh;
 }

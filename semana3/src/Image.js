@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-function ImageSection() {
+function Image() {
 
     const figcaptionStyle = {
         color: "white"
@@ -28,7 +28,7 @@ function ImageSection() {
     return (
         <section>
             <br></br>
-            <a href="https://www.festivalvilardemouros.pt" target="_blank" ref={imageRef}>
+            <a href="https://www.festivalvilardemouros.pt" target="_blank" ref={imageRef} style={{transition: "1s"}}>
                 <img src="/images/img1.png" width="400" height="auto"></img>
                 <br></br>
                 <figcaption style={figcaptionStyle} > Fig. 1 - Cartaz do Festival </figcaption>
@@ -37,4 +37,4 @@ function ImageSection() {
         </section>
     );
 }
-export default ImageSection;
+export default Image;
