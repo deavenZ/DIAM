@@ -3,3 +3,8 @@ table {
     color: #101010;
     margin: 0 auto;
 }
+
+td, th {
+    padding: 10px; /* Adiciona espaço dentro das células */
+    border: 1px solid black; /* Apenas para visualização */
+}

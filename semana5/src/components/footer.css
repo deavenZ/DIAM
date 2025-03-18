@@ -1,0 +1,18 @@
+footer {
+    cursor: pointer;
+    text-align: center;
+    background-color: #18945c;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 40px 0;
+    box-sizing: border-box;
+}
+
+footer a {
+    color: #87CEEB
+}
+
+p {
+    color: white
+}
