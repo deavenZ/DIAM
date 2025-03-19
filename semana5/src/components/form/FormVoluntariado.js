@@ -4,7 +4,8 @@ import "./formVoluntariado.css"
 function FormVoluntariado() {
 
     const [data, setData] = useState({ nome: "", telefone: "", email: "", comentario: "" });
-    const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
+    
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
 
     const palavrasMas = [
         "abecula", "abentesma", "achavascado", "alimaria", "andrajoso", "barrega", "biltre",
