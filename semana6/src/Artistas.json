@@ -1,0 +1,29 @@
+[
+    {
+        "nome": "Don Pollo",
+        "imagem": "/images/donpollo.jpg",
+        "data": "1 de Março",
+        "hora": "19:19",
+        "estilo": "Eletrónica",
+        "descricao": "¡Linganguliguliguliguacha! ¡Lingangu, Lingangu ¡Linganguliguliguliguacha! ¡Lingangu, Lingangu ¡Linganguliguliguacha! ¡Lingangu, Lingangu ¡Linganguliguliguacha! ¡Lingangu, Lingangu",
+        "urlvideo": "https://www.youtube.com/embed/8jZznfOtMVs?si=VvPXnpzsdcsnatta"
+    },
+    {
+        "nome": "Wuant",
+        "imagem": "/images/wuant.jpg",
+        "data": "29 de Fevereiro",
+        "hora": "00:01",
+        "estilo": "Rap",
+        "descricao": "ZED! Tu não sabes onde anda ZED! Nem que desligues as sombras. ZED! Não vale a pena persegui-lo. ZED! ZED!",
+        "urlvideo": "https://www.youtube.com/embed/fi1PrjerOoo?si=WI5N5fxddL66q6lS"
+    },
+    {
+        "nome": "KSI",
+        "imagem": "/images/ksi.jpg",
+        "data": "28 de Fevereiro",
+        "hora": "00:00",
+        "estilo": "Pop",
+        "descricao": "I'm in the thick of it, everybody knows. They know me where it snows, I skied in and they froze. I don't know no nothin' 'bout no ice, I'm just cold. Forty somethin' milli' subs or so, I've been told",
+        "urlvideo": "https://www.youtube.com/embed/At8v_Yc044Y?si=IusRFzHvXBeTb7_j"
+    }
+]
