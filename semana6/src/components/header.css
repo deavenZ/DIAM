@@ -1,0 +1,19 @@
+header {
+    text-align: center;
+    background-color: #18945c;
+    color: floralwhite;
+}
+
+nav a:link,
+nav a:visited {
+    color: white;
+    padding: 14px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+nav a:hover,
+nav a:active {
+    background-color: orange;
+}
