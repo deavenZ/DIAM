@@ -6,6 +6,7 @@ import './index.css';
 import Form from './pages/Form'
 import App from './pages/App';
 import Inq from './pages/Inq';
+import Conf from './pages/Conf';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -14,7 +15,8 @@ root.render(
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="/form" element={<Form />} />
-      <Route path="/inq" element={<Inq />} />
+      <Route path="/inquerito" element={<Inq />} />
+      <Route path="/inquerito/confirmacao" element={<Conf />} />
     </Routes>
   </BrowserRouter>
 );

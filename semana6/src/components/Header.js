@@ -11,7 +11,7 @@ function Header() {
                 <nav>
                     <a><Link to="/">Pagina Inicial</Link></a>
                     <a><Link to="/form">Formulário de Voluntariado</Link></a>
-                    <a><Link to = "/inq">Inquérito</Link></a>
+                    <a><Link to="/inquerito">Inquérito</Link></a>
                     <br></br>
                 </nav>
         </header>
