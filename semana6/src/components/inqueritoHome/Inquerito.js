@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import Artistas from "./Artistas.json"
+import './Inquerito.css';
 
 function Inquerito() {
 
@@ -25,36 +26,41 @@ function Inquerito() {
 
 
     return (
-        <>
-            <form onSubmit={submitHandler}>
-                <label>Artistas Preferidos: </label>
-                {Artistas.map((artista, index) => (
-                    <label key={index}>
-                        <input name="artistas" type="checkbox" value={artista.nome} onChange={changeHandler} />
-                        {artista.nome}
-                    </label>
-                ))}
-                <br /> 
-
-                <label>Horários Preferidos: </label>
-                <select name="horario" onChange={changeHandler}>
-                    <option value="">Selecione um horário</option>
-                    <option value="18h">18h</option>
-                    <option value="20h">20h</option>
-                    <option value="22h">22h</option>
-                </select>
-                <br />
-
-                <label>Comentário: </label>
-                <textarea name="comentario" onChange={changeHandler} />
-                <br />
-
-                <button type="submit">Submeter Inquérito</button>
-            </form>
-        </>
-
-
-    );
+        <div className="form-container">
+          <form onSubmit={submitHandler}>
+        
+        <label>Artistas Preferidos:</label>
+            <div className="quadrado">
+              {Artistas.map((artista, index) => (
+                <label key={index} className="checkbox-label">
+                  <input type="checkbox" name="artistas" value={artista.nome} onChange={changeHandler}/>
+                  {artista.nome}
+                </label>
+              ))}
+            </div>
+    
+            <label>Horários Preferidos:</label>
+              <div className="quadrado">
+              <select name="horario" onChange={changeHandler}>
+                <option value="">Selecione um horário</option>
+                <option value="18h">18h</option>
+                <option value="20h">20h</option>
+                <option value="22h">22h</option>
+              </select>
+            </div>
+    
+            
+            <label>Comentário:</label>
+              <div className="quadrado-comentario">
+              <textarea name="comentario" onChange={changeHandler} />
+            </div>
+              <button type="submit">Submeter Inquérito</button>
+            
+    
+          </form>
+        </div>
+      );    
+    
 }
 
 export default Inquerito;

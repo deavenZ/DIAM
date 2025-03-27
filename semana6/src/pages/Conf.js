@@ -1,6 +1,6 @@
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import Confirmation from '../components/inqueritoConf/Conf'
+import Confirmation from '../components/inqueritoConf/Confirmation'
 import './Conf.css';
 
 
