@@ -1,84 +1,96 @@
 .form-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
-  }
-  
-  .quadrado {
-    border: 1px black;
-    padding: 20px;
-    border-radius: 10px;
-    width: 95%; 
-    max-width: 1200px; 
-    margin: 30px auto; 
-    background-color: #f9f9f9;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  
-  
-  .quadrado label {
-    font-weight: bold;
-    margin-bottom: 10px;
-    text-align: center; 
-    width: 100%;
-  }
-  
-  
-  .checkbox-label {
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    justify-content: center;
-    margin: 5px 0;
-    width: 100%;
-  }
+  max-width: 500px;
+  background-color: #dddddd;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  min-height: 100vh;
+}
 
-  .quadrado-comentario {
-    width: 95%; 
-    max-width: 1400px; 
-    margin: 20px auto; 
-  }
-  
-  select {
-    width: 90%; 
-    padding: 10px;
-    font-size: 16px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  
-  textarea {
-    width: 100%; 
-    min-height: 200px; 
-    resize: vertical;
-    border: 1px solid black; 
-    margin-bottom: 20px; 
-  }
-  
-  .button-box { 
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-  
-  button {
-    padding: 10px 20px;
-    background-color: #18945c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  button:hover {
-    background-color: orange;
-  }
-  
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.quadrado {
+  border: 1px black;
+  padding: 20px;
+  border-radius: 10px;
+  width: 95%;
+  max-width: 1200px;
+  margin: 30px auto;
+  background-color: #f9f9f9;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+
+.quadrado label {
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+  width: 100%;
+}
+
+
+.checkbox-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 5px 0;
+  width: 100%;
+}
+
+.quadrado-comentario {
+  width: 95%;
+  max-width: 1400px;
+  margin: 20px auto;
+}
+
+select {
+  width: 90%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+
+textarea {
+  width: 100%;
+  min-height: 200px;
+  resize: vertical;
+  border: 1px solid black;
+  margin-bottom: 20px;
+}
+
+.button-box {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #18945c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: orange;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #4CAF50;
+  outline: none;
+}

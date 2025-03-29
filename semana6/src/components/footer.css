@@ -2,7 +2,7 @@ footer {
     cursor: pointer;
     text-align: center;
     background-color: #18945c;
-    position: absolute;
+    position: relative;
     bottom: 0;
     width: 100%;
     padding: 40px 0;
