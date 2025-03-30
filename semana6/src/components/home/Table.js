@@ -15,30 +15,26 @@ function Table() {
                     <td> 21 de Agosto de 2025 </td>
                     <td>
                         <ul>
-                            <a href="https://www.instagram.com/fogofriooficial/" target="_blank">
-                                <li> Fogo Frio </li>
+                            <a href="https://open.spotify.com/artist/2xvtxDNInKDV4AvGmjw6d1" target="_blank">
+                                <li> Bladee </li>
                             </a>
-                            <a href="https://www.youtube.com/channel/UCswr5T-CL6v0GZVIkCeDLIw/" target="_blank">
-                                <li> Delfins </li>
+                            <a href="https://open.spotify.com/artist/1URnnhqYAYcrqrcwql10ft" target="_blank">
+                                <li> 21 Savage </li>
                             </a>
-                            <a href="https://open.spotify.com/artist/6zo2w5Asb1DMFZErdRDrrK" target="_blank">
-                                <li> GNR </li>
+                            <a href="https://open.spotify.com/artist/699OTQXzgjhIYAHMy9RyPD" target="_blank">
+                                <li> Playboi Carti </li>
                             </a>
-                            <a href="https://open.spotify.com/artist/3g9Buo4ROuw4Hrjuh33WTB" target="_blank">
-                                <li> Amalia Hoje </li>
-                            </a>
-                            <a href="https://www.youtube.com/channel/UCtmRncXo_NnSlGw6nhHov2g" target="_blank">
-                                <li> The Legendary Tigerman </li>
+                            <a href="https://open.spotify.com/artist/6HvZYsbFfjnjFrWF950C9d" target="_blank">
+                                <li> NewJeans </li>
                             </a>
                         </ul>
                     </td>
                     <td>
                         <ul>
-                            <li> 16:00h </li>
                             <li> 17:30h </li>
                             <li> 19:00h </li>
                             <li> 21:00h </li>
-                            <li> 23:00h </li>
+                            <li> 23:30h </li>
                         </ul>
                     </td>
                 </tr>
@@ -47,30 +43,26 @@ function Table() {
                     <td> 22 de Agosto de 2025 </td>
                     <td>
                         <ul>
-                            <a href="https://www.instagram.com/rampoficial/" target="_blank">
-                                <li> Ramp </li>
+                            <a href="https://open.spotify.com/artist/6hG0VsXXlD10l60TqiIHIX" target="_blank">
+                                <li> Ecco2k </li>
                             </a>
-                            <a href="https://www.youtube.com/channel/UCsh-FOHtF-_bGOzftZYP5VA" target="_blank">
-                                <li> MoonSpell </li>
+                            <a href="https://open.spotify.com/artist/0iEtIxbK0KxaSlF7G42ZOp" target="_blank">
+                                <li> Metro Boomin </li>
                             </a>
-                            <a href="https://www.youtube.com/channel/UCsnBzXuzzsrJKArgWtJxi2g" target="_blank">
-                                <li> Soulfly </li>
+                            <a href="https://open.spotify.com/artist/2YZyLoL8N0Wb9xBt1NhZWg" target="_blank">
+                                <li> Kendrick Lamar </li>
                             </a>
-                            <a href="https://www.youtube.com/channel/UCrBTy7Bat9-Fi2fWC95XXHw" target="_blank">
-                                <li> Xutos & Pontapés </li>
-                            </a>
-                            <a href="https://www.youtube.com/channel/UC_IvuhH71q-SdIHoap9B7FQ" target="_blank">
-                                <li> The Cult </li>
+                            <a href="https://open.spotify.com/artist/3HqSLMAZ3g3d5poNaI7GOU" target="_blank">
+                                <li> IU </li>
                             </a>
                         </ul>
                     </td>
                     <td>
                         <ul>
-                            <li> 15:30h </li>
-                            <li> 17:00h </li>
                             <li> 18:30h </li>
                             <li> 20:00h </li>
                             <li> 22:00h </li>
+                            <li> 00:00h </li>
                         </ul>
                     </td>
                 </tr>
@@ -79,62 +71,26 @@ function Table() {
                     <td> 23 de Agosto de 2025 </td>
                     <td>
                         <ul>
-                            <a href="https://www.youtube.com/channel/UC8PpCsEE3Xy5k5U-SK3tcog" target="_blank">
-                                <li> Sulfur Giant </li>
+                            <a href="https://open.spotify.com/artist/3cGojc1Yu89IHXx8OeSnee" target="_blank">
+                                <li> Thaiboy Digital </li>
                             </a>
-                            <a href="https://www.youtube.com/channel/UCTlSPtAc47Zgaodho6Wh73w" target="_blank">
-                                <li> Crystal Fighters </li>
+                            <a href="https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4" target="_blank">
+                                <li> Drake </li>
                             </a>
-                            <a href="https://www.youtube.com/channel/UCoRVLtSH6o3NqKXcILYOEXA" target="_blank">
-                                <li> Capitão Fausto </li>
+                            <a href="https://open.spotify.com/artist/50co4Is1HCEo8bhOyUWKpn" target="_blank">
+                                <li> Young Thug </li>
                             </a>
-                            <a href="https://www.youtube.com/channel/UC-ezzb2ilpVYCpNJu4VgYTw" target="_blank">
-                                <li> Ornatos Violeta </li>
-                            </a>
-                            <a href="https://www.youtube.com/channel/UC2a4yOL6AmQDozwc3NsUDNg" target="_blank">
-                                <li> Die Antwoord </li>
+                            <a href="https://open.spotify.com/artist/4SpbR6yFEvexJuaBpgAU5p" target="_blank">
+                                <li> LE SSERAFIM </li>
                             </a>
                         </ul>
                     </td>
                     <td>
                         <ul>
-                            <li> 16:00h </li>
-                            <li> 17:30h </li>
                             <li> 19:00h </li>
-                            <li> 21:00h </li>
-                            <li> 23:00h </li>
-                        </ul>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td> 24 de Agosto de 2025 </td>
-                    <td>
-                        <ul>
-                            <a href="https://www.youtube.com/channel/UCT3oe0jZDJLHScPyZCMxliQ" target="_blank">
-                                <li> Vapors Of Morphine </li>
-                            </a>
-                            <a href="https://www.youtube.com/channel/UCSq5rx_u6gQDyOBtPc0QKgg" target="_blank">
-                                <li> David Fonseca </li>
-                            </a>
-                            <a href="https://www.youtube.com/channel/UCMflk2MD3YD_N30ujpHuMYA" target="_blank">
-                                <li> The Waterboys </li>
-                            </a>
-                            <a href="https://www.youtube.com/channel/UCATDZ9YHc9cOIKbnD1yiY5g" target="_blank">
-                                <li> The Libertines </li>
-                            </a>
-                            <a href="https://www.youtube.com/channel/UCVmVXuG1fLGNhV_dqpGlhTQ" target="_blank">
-                                <li> The Darkness </li>
-                            </a>
-                        </ul>
-                    </td>
-                    <td>
-                        <ul>
-                            <li> 15:30h </li>
-                            <li> 17:00h </li>
-                            <li> 18:30h </li>
                             <li> 20:30h </li>
-                            <li> 23:00h </li>
+                            <li> 22:30h </li>
+                            <li> 00:30h </li>
                         </ul>
                     </td>
                 </tr>

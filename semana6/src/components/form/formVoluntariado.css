@@ -13,14 +13,6 @@ form {
   flex-direction: column;
 }
 
-form p {
-    color: black;
-}
-
-.input-group {
-  margin-bottom: 15px;
-}
-
 label {
   font-weight: bold;
   margin-bottom: 5px;
@@ -44,10 +36,13 @@ input[type="submit"] {
   padding: 10px;
   font-size: 16px;
   border-radius: 4px;
+  width: 100px;
+  margin: 0 auto;
 }
 
 input[type="submit"]:hover {
   background-color: #45a049;
+  transition: all 0.2s ease;
 }
 
 input[type="submit"]:disabled {

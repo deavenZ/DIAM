@@ -1,0 +1,52 @@
+.confirmacao-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.confirmacao-container h2 {
+    color: black;
+    text-align: center;
+    margin-bottom: 32px;
+    font-size: 32px;
+}
+
+.confirmacao-container h3 {
+    color: black;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    font-size: 22px;
+}
+
+.confirmacao-container ul {
+    list-style-type: disc;
+    padding: 0 0 0 20px;
+}
+
+.confirmacao-container li {
+    padding: 10px 10px;
+}
+
+.confirmacao-container p {
+    color: black;
+    padding: 10px;
+}
+
+.botao-voltar {
+    display: block;
+    margin: 32px auto 0;
+    text-align: center;
+    width: 100%;
+    max-width: 250px;
+    padding: 12px 12px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 6px;
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.botao-voltar:hover {
+    background-color: #45a049;
+}

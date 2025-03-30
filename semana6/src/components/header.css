@@ -1,11 +1,10 @@
 header {
     text-align: center;
     background-color: #18945c;
-    color: floralwhite;
+    color: white;
 }
-
-nav a:link,
-nav a:visited {
+.header-link:link,
+.header-link:visited {
     color: white;
     padding: 14px 25px;
     text-align: center;
@@ -13,7 +12,8 @@ nav a:visited {
     display: inline-block;
 }
 
-nav a:hover,
-nav a:active {
+.header-link:hover,
+.header-link:active {
     background-color: orange;
+    transition: all 0.2s ease;
 }

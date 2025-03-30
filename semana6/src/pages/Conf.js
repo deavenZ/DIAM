@@ -1,19 +1,20 @@
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import Confirmation from '../components/inqueritoConf/Confirmation'
-import './Conf.css';
+import Confirmacao from '../components/inqueritoConf/Confirmacao'
 
 
 function Conf() {
 
-    return (
-      <div className='Conf'>
-        <Header/>
-        <Confirmation/>
-        <Footer/>
-      </div>
-    );
+  return (
+    <>
+      <Header />
+      <main>
+        <Confirmacao />
+      </main>
+      <Footer />
+    </>
+  );
 
-  }
-  
-  export default Conf;
+}
+
+export default Conf;

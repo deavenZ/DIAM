@@ -1,29 +1,110 @@
 [
     {
-        "nome": "Don Pollo",
-        "imagem": "/images/donpollo.jpg",
-        "data": "1 de Março",
-        "hora": "19:19",
-        "estilo": "Eletrónica",
-        "descricao": "¡Linganguliguliguliguacha! ¡Lingangu, Lingangu ¡Linganguliguliguliguacha! ¡Lingangu, Lingangu ¡Linganguliguliguacha! ¡Lingangu, Lingangu ¡Linganguliguliguacha! ¡Lingangu, Lingangu",
-        "urlvideo": "https://www.youtube.com/embed/8jZznfOtMVs?si=VvPXnpzsdcsnatta"
+        "nome": "Bladee",
+        "imagem": "/images/bladee.jpg",
+        "data": "21 de Agosto",
+        "hora": "17:30",
+        "estilo": "Cloud Rap",
+        "descricao": "Benjamin Reichwald, conhecido como Bladee, é um rapper, produtor e designer sueco. Membro do coletivo Drain Gang, ele é conhecido por seu estilo único que mistura cloud rap, ambient e elementos experimentais.",
+        "urlvideo": "https://www.youtube.com/embed/vcAp4nmTZCA"
     },
     {
-        "nome": "Wuant",
-        "imagem": "/images/wuant.jpg",
-        "data": "29 de Fevereiro",
-        "hora": "00:01",
-        "estilo": "Rap",
-        "descricao": "ZED! Tu não sabes onde anda ZED! Nem que desligues as sombras. ZED! Não vale a pena persegui-lo. ZED! ZED!",
-        "urlvideo": "https://www.youtube.com/embed/fi1PrjerOoo?si=WI5N5fxddL66q6lS"
+        "nome": "21 Savage",
+        "imagem": "/images/21savage.jpg",
+        "data": "21 de Agosto",
+        "hora": "19:00",
+        "estilo": "Trap",
+        "descricao": "Shéyaa Bin Abraham-Joseph, conhecido como 21 Savage, é um rapper britânico-americano conhecido por seu estilo trap distintivo e letras realistas sobre a vida nas ruas de Atlanta.",
+        "urlvideo": "https://www.youtube.com/embed/PK6vmRcp5SA"
     },
     {
-        "nome": "KSI",
-        "imagem": "/images/ksi.jpg",
-        "data": "28 de Fevereiro",
+        "nome": "Playboi Carti",
+        "imagem": "/images/playboicarti.jpg",
+        "data": "21 de Agosto",
+        "hora": "21:00",
+        "estilo": "Trap/Experimental",
+        "descricao": "Jordan Terrell Carter, conhecido como Playboi Carti, é um rapper americano conhecido por seu estilo único que mistura trap com elementos experimentais e vocais inovadores.",
+        "urlvideo": "https://www.youtube.com/embed/uUuXiLcHYis"
+    },
+    {
+        "nome": "NewJeans",
+        "imagem": "/images/newjeans.jpg",
+        "data": "21 de Agosto",
+        "hora": "23:30",
+        "estilo": "K-pop",
+        "descricao": "NewJeans é um grupo feminino sul-coreano formado pela HYBE/ADOR. O grupo é conhecido por seu som que mistura R&B, pop e elementos retro, com hits como 'Attention' e 'Hype Boy'.",
+        "urlvideo": "https://www.youtube.com/embed/js1CtxSY38I"
+    },
+    {
+        "nome": "Ecco2k",
+        "imagem": "/images/ecco2k.jpg",
+        "data": "22 de Agosto",
+        "hora": "18:30",
+        "estilo": "Experimental/Cloud Rap",
+        "descricao": "Zak Arogundade, conhecido como Ecco2k, é um artista sueco multifacetado, membro do Drain Gang. Seu trabalho mistura elementos de cloud rap, ambient e música experimental.",
+        "urlvideo": "https://www.youtube.com/embed/5s7jaXxZpdy"
+    },
+    {
+        "nome": "Metro Boomin",
+        "imagem": "/images/metroboomin.jpg",
+        "data": "22 de Agosto",
+        "hora": "20:00",
+        "estilo": "Hip-Hop/Trap",
+        "descricao": "Leland Tyler Wayne, conhecido como Metro Boomin, é um produtor e DJ americano. É considerado um dos produtores mais influentes do trap moderno.",
+        "urlvideo": "https://www.youtube.com/embed/rCt7hPQ9Gy0"
+    },
+    {
+        "nome": "Kendrick Lamar",
+        "imagem": "/images/kendrick.jpg",
+        "data": "22 de Agosto",
+        "hora": "22:00",
+        "estilo": "Hip-Hop",
+        "descricao": "Kendrick Lamar é um rapper e compositor americano, conhecido por suas letras profundas e complexas. Vencedor de múltiplos Grammys, é considerado um dos maiores artistas do hip-hop.",
+        "urlvideo": "https://www.youtube.com/embed/B5eT6TaEtPI"
+    },
+    {
+        "nome": "IU",
+        "imagem": "/images/iu.jpg",
+        "data": "22 de Agosto",
         "hora": "00:00",
-        "estilo": "Pop",
-        "descricao": "I'm in the thick of it, everybody knows. They know me where it snows, I skied in and they froze. I don't know no nothin' 'bout no ice, I'm just cold. Forty somethin' milli' subs or so, I've been told",
-        "urlvideo": "https://www.youtube.com/embed/At8v_Yc044Y?si=IusRFzHvXBeTb7_j"
+        "estilo": "K-pop/Folk",
+        "descricao": "Lee Ji-eun, conhecida como IU, é uma cantora e atriz sul-coreana. É uma das artistas mais populares da Coreia do Sul, conhecida por sua voz única e versatilidade musical.",
+        "urlvideo": "https://www.youtube.com/embed/v7bnOxV4jAc"
+    },
+    {
+        "nome": "Thaiboy Digital",
+        "imagem": "/images/thaiboy.jpg",
+        "data": "23 de Agosto",
+        "hora": "19:00",
+        "estilo": "Cloud Rap",
+        "descricao": "Thanapat Thaothawong, conhecido como Thaiboy Digital, é um rapper tailandês baseado na Suécia. Membro do Drain Gang, ele mistura elementos de cloud rap com influências da música tailandesa.",
+        "urlvideo": "https://www.youtube.com/embed/bM_lLfn0QGE"
+    },
+    {
+        "nome": "Drake",
+        "imagem": "/images/drake.jpg",
+        "data": "23 de Agosto",
+        "hora": "20:30",
+        "estilo": "Hip-Hop/R&B",
+        "descricao": "Aubrey Drake Graham é um rapper, cantor e compositor canadense. Um dos artistas mais bem-sucedidos da história da música, conhecido por misturar rap com R&B e pop.",
+        "urlvideo": "https://www.youtube.com/embed/JFm7YDVlqnI"
+    },
+    {
+        "nome": "Young Thug",
+        "imagem": "/images/youngthug.jpg",
+        "data": "23 de Agosto",
+        "hora": "22:30",
+        "estilo": "Trap",
+        "descricao": "Jeffery Lamar Williams, conhecido como Young Thug, é um rapper americano conhecido por seu estilo vocal único e abordagem experimental ao trap.",
+        "urlvideo": "https://www.youtube.com/embed/fjUGC8g4GOE"
+    },
+    {
+        "nome": "LE SSERAFIM",
+        "imagem": "/images/lesserafim.jpg",
+        "data": "23 de Agosto",
+        "hora": "00:30",
+        "estilo": "K-pop",
+        "descricao": "LE SSERAFIM é um grupo feminino sul-coreano formado pela HYBE/Source Music. O grupo é conhecido por seu conceito forte e músicas que misturam pop com elementos eletrônicos.",
+        "urlvideo": "https://www.youtube.com/embed/UBURTj20HXI"
     }
 ]

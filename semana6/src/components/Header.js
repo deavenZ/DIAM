@@ -5,14 +5,11 @@ function Header() {
 
     return (
         <header>
-            <br></br>
                 <h1>Festival de Música Vilar de Mouros 2025</h1>
-                <br></br>
                 <nav>
-                    <a><Link to="/">Pagina Inicial</Link></a>
-                    <a><Link to="/form">Formulário de Voluntariado</Link></a>
-                    <a><Link to="/inquerito">Inquérito</Link></a>
-                    <br></br>
+                    <Link to="/" className="header-link">Pagina Inicial</Link>
+                    <Link to="/form" className="header-link">Formulário de Voluntariado</Link>
+                    <Link to="/inquerito" className="header-link">Inquérito</Link>
                 </nav>
         </header>
     );

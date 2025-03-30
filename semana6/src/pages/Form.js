@@ -1,14 +1,15 @@
 import Footer from "../components/Footer";
 import FormVoluntariado from "../components/form/FormVoluntariado";
 import Header from "../components/Header";
-import './Form.css'
 
 function Form() {
 
     return (
         <>
         <Header/>
-        <FormVoluntariado/>
+        <main>
+            <FormVoluntariado/>
+        </main>
         <Footer/>
         </>
     );

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 import Artistas from "./Artistas.json"
-import './Inquerito.css';
+import './inquerito.css';
 
 function Inquerito() {
 
@@ -10,23 +10,39 @@ function Inquerito() {
   const [inqData, setInqData] = useState({
     artistas: [],
     horario: "",
-    comentario: "",
+    critica: "",
   });
 
   const changeHandler = (e) => {
-    const { name, value } = e.target;
-    setInqData({ ...inqData, [name]: value });
+    const { name, value, type, checked } = e.target;
+    if (type === "checkbox") {
+      setInqData((prev) => {
+        const newArtistas = checked
+          ? [...prev.artistas, value] // Adiciona artista se marcado
+          : prev.artistas.filter((artista) => artista !== value); // Remove se desmarcado
+
+        return { ...prev, artistas: newArtistas };
+      });
+    } else {
+      setInqData({ ...inqData, [name]: value });
+    }
   };
 
   const submitHandler = (e) => {
     e.preventDefault();
-    navigate("/inquerito/confirmacao", { state: { artistas: inqData.artistas, horario: inqData.horario, comentario: inqData.comentario } });
+
+    if (inqData.artistas.length === 0) {
+      alert("Por favor, selecione pelo menos um artista.");
+      return;
+    }
+
+    navigate("/inquerito/confirmacao", { state: { artistas: inqData.artistas, horario: inqData.horario, critica: inqData.critica } });
   };
 
 
 
   return (
-    <div className="form-container">
+    <div className="inquerito-container">
       <form onSubmit={submitHandler}>
 
         <label>Artistas Preferidos:</label>
@@ -39,9 +55,11 @@ function Inquerito() {
           ))}
         </div>
 
+        <br />
+
         <label>Horários Preferidos:</label>
         <div className="quadrado">
-          <select name="horario" onChange={changeHandler}>
+          <select name="horario" onChange={changeHandler} required>
             <option value="">Selecione um horário</option>
             <option value="18h">18h</option>
             <option value="20h">20h</option>
@@ -49,10 +67,11 @@ function Inquerito() {
           </select>
         </div>
 
+        <br />
 
-        <label>Comentário:</label>
+        <label>Criticas (o que não correu bem no festival):</label>
         <div className="quadrado-comentario">
-          <textarea name="comentario" onChange={changeHandler} />
+          <textarea name="critica" onChange={changeHandler}/>
         </div>
         <button type="submit">Submeter Inquérito</button>
 

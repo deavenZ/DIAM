@@ -1,10 +1,11 @@
-.form-container {
-  max-width: 500px;
+.inquerito-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 25px 40px 25px 25px;
   background-color: #dddddd;
   border-radius: 16px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   position: relative;
-  min-height: 100vh;
 }
 
 form {
@@ -21,28 +22,65 @@ form {
   margin: 30px auto;
   background-color: #f9f9f9;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
 }
 
-
-.quadrado label {
+.quadrado > label {
   font-weight: bold;
   margin-bottom: 10px;
-  text-align: center;
+  text-align: left;
   width: 100%;
 }
 
-
 .checkbox-label {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: center;
-  justify-content: center;
+  gap: 12px;
   margin: 5px 0;
+  padding: 8px 16px;
   width: 100%;
+  box-sizing: border-box;
+  font-weight: normal !important;
+  position: relative;
+}
+
+.checkbox-label input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.checkbox-label input[type="checkbox"]:checked {
+  background-color: #4CAF50;
+  border-color: #4CAF50;
+}
+
+.checkbox-label input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 11px;
+  border: solid white;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+
+.checkbox-label:hover {
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
+
+.checkbox-label input[type="checkbox"]:hover {
+  border-color: #4CAF50;
 }
 
 .quadrado-comentario {
@@ -60,37 +98,55 @@ select {
   border: 1px solid #ccc;
 }
 
-
 textarea {
   width: 100%;
-  min-height: 200px;
+  min-height: 100px;
   resize: vertical;
   border: 1px solid black;
   margin-bottom: 20px;
 }
 
-.button-box {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
 button {
   padding: 10px 20px;
-  background-color: #18945c;
+  background-color: #4CAF50;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  width: 200px;
+  margin: 0 auto;
 }
 
 button:hover {
-  background-color: orange;
+  background-color: #45a049;
+  transition: all 0.2s ease;
 }
 
 input:focus,
 textarea:focus {
   border-color: #4CAF50;
   outline: none;
+}
+
+.botoes-container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.botoes-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #18945c;
+    color: white;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.botoes-container button:hover {
+    background-color: #1a8654;
 }
