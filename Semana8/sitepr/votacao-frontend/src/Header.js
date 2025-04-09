@@ -3,7 +3,7 @@ function Header() {
         <>
             <div className="text-center">
                 <img
-                    src="/iscte.jpg"
+                    src="/images/iscte.jpg"
                     width="600"
                     alt="ISCTE"
                     className="img-thumbnail"
