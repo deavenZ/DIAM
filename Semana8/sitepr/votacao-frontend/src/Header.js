@@ -9,7 +9,7 @@ function Header() {
                     className="img-thumbnail"
                     style={{ marginTop: "20px" }}
                 />
-                <h2>Exemplo</h2>
+                <h2>Questões e Respostas</h2>
                 <h3>Integração de Django com React</h3>
             </div>
         </>

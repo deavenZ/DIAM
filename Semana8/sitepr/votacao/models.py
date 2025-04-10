@@ -15,7 +15,7 @@ class Questao(models.Model):
 
 
 class Opcao(models.Model):
-    questao = models.ForeignKey(Questao, on_delete=models.CASCADE)
+    questao = models.ForeignKey(Questao, on_delete=models.CASCADE, related_name='opcao_set')
     opcao_texto = models.CharField(max_length=200)
     votos = models.IntegerField(default=0)
 

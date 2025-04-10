@@ -8,20 +8,19 @@ function CreateQuestion() {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    fetch('http://localhost:8000/votacao/api/questions/', {
+    if (!questionText.trim()) {
+      alert('Por favor, insira um texto para a questão.');
+      return;
+    }
+
+    fetch('http://localhost:8000/votacao/api/questoes/', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        questao_texto: questionText,
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ questao_texto: questionText })
     })
       .then(response => response.json())
-      .then(data => {
-        navigate('/');
-      })
-      .catch(error => console.error('Error:', error));
+      .then(data => navigate(`/question/${data.pk}`))
+      .catch(() => alert('Erro ao criar questão'));
   };
 
   return (

@@ -2,44 +2,40 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 function CreateOption() {
-  const [optionText, setOptionText] = useState('');
   const [question, setQuestion] = useState(null);
+  const [optionText, setOptionText] = useState('');
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`http://localhost:8000/votacao/api/question/${id}/`)
+    fetch(`http://localhost:8000/votacao/api/questao/${id}/`)
       .then(response => response.json())
-      .then(data => setQuestion(data))
-      .catch(error => console.error('Error:', error));
+      .then(data => setQuestion(data));
   }, [id]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    fetch(`http://localhost:8000/votacao/api/options/${id}/`, {
+    if (!optionText.trim()) {
+      alert('Por favor, insira um texto para a opção.');
+      return;
+    }
+    
+    fetch(`http://localhost:8000/votacao/api/opcoes/${id}/`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         opcao_texto: optionText,
-      }),
-    })
-      .then(response => response.json())
-      .then(data => {
-        navigate(`/question/${id}`);
+        questao: id
       })
-      .catch(error => console.error('Error:', error));
+    })
+      .then(() => navigate(`/question/${id}`))
+      .catch(() => alert('Erro ao adicionar opção'));
   };
-
-  if (!question) {
-    return <div>Carregando...</div>;
-  }
 
   return (
     <div className="create-option">
-      <h2>Adicionar Opção para: {question.questao_texto}</h2>
+      <h2>Adicionar Opção para: {question?.questao_texto}</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="optionText">Texto da Opção:</label>
@@ -53,7 +49,7 @@ function CreateOption() {
         </div>
         <div className="form-actions">
           <button type="submit" className="button">Adicionar Opção</button>
-          <button type="button" onClick={() => navigate(`/`)} className="button">Cancelar</button>
+          <button type="button" onClick={() => navigate(`/question/${id}`)} className="button">Cancelar</button>
         </div>
       </form>
     </div>

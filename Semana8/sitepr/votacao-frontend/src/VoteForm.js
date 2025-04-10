@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Form, FormGroup, Table, Label } from "reactstrap";
+import { Form, FormGroup, Table, Label } from "reactstrap";
 import axios from "axios";
 import moment from "moment";
 
@@ -10,13 +10,21 @@ function VoteForm({ question, onVoteComplete }) {
         event.preventDefault();
         if (selectedOption >= 0) {
             const option = question.opcoes[selectedOption];
-            axios.post(`http://localhost:8000/votacao/api/option/${option.pk}/vote/`)
-                .then(() => {
+            console.log('Votando na opção:', option);
+            
+            axios.post(`http://localhost:8000/votacao/api/opcao/${option.pk}/votar/`)
+                .then(response => {
+                    console.log('Voto registrado com sucesso:', response.data);
                     if (onVoteComplete) {
                         onVoteComplete();
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('Erro ao votar:', error);
+                    alert('Ocorreu um erro ao registrar seu voto. Por favor, tente novamente.');
+                });
+        } else {
+            alert('Por favor, selecione uma opção para votar.');
         }
     }
     
@@ -28,7 +36,6 @@ function VoteForm({ question, onVoteComplete }) {
     return (
         <>
             <Form onSubmit={handleVote}>
-                
                 <FormGroup>
                     <Table>
                         <thead>
@@ -57,11 +64,11 @@ function VoteForm({ question, onVoteComplete }) {
                         </tbody>
                     </Table>
                     <FormGroup>
-                    <b>Data de publicação:</b>
-                    <p>{moment(question.pub_data).format("YYYY-MM-DD HH:mm")}</p>
+                        <b>Data de publicação:</b>
+                        <p>{moment(question.pub_data).format("YYYY-MM-DD HH:mm")}</p>
+                    </FormGroup>
                 </FormGroup>
-                </FormGroup>
-                <Button color="primary">Votar</Button>
+                <button type="submit" className="button vote-button">Votar</button>
             </Form>
         </>
     );
