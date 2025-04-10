@@ -24,7 +24,6 @@ function CreateOption() {
       },
       body: JSON.stringify({
         opcao_texto: optionText,
-        questao: id
       }),
     })
       .then(response => response.json())

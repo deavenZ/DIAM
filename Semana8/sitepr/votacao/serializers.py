@@ -5,7 +5,7 @@ from .models import Questao, Opcao
 class OpcaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Opcao
-        fields = ('pk', 'opcao_texto', 'votos', 'questao')
+        fields = ('pk', 'opcao_texto', 'votos')
 
 
 class QuestaoSerializer(serializers.ModelSerializer):
