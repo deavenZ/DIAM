@@ -27,6 +27,7 @@ function VotePage() {
       <div className="vote-content">
         <h2>{question.questao_texto}</h2>
         <VoteForm question={question} onVoteComplete={handleClose} />
+        <br />
         <button onClick={handleClose} className="button">Voltar</button>
       </div>
     </div>

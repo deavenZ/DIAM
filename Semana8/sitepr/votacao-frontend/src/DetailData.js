@@ -6,13 +6,12 @@ function DetailData({ question }) {
     return (
         <div className="detail-data">
             <h2>{question.questao_texto}</h2>
-            <p><b>Data de publicação:</b> {moment(question.pub_data).format("YYYY-MM-DD HH:mm")}</p>
             
             <h3>Opções:</h3>
             <Table>
                 <thead>
                     <tr>
-                        <th>Opção</th>
+                        <th>Opção:</th>
                         <th>Votos</th>
                     </tr>
                 </thead>

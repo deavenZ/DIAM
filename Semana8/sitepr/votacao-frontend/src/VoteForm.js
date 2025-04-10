@@ -28,15 +28,11 @@ function VoteForm({ question, onVoteComplete }) {
     return (
         <>
             <Form onSubmit={handleVote}>
-                <FormGroup>
-                    <b>Texto:</b><p>{question.questao_texto}</p>
-                    <b>Data de publicação:</b>
-                    <p>{moment(question.pub_data).format("YYYY-MM-DD HH:mm")}</p>
-                </FormGroup>
+                
                 <FormGroup>
                     <Table>
                         <thead>
-                            <tr><th align="left">Opção</th></tr>
+                            <tr><th align="left">Opções:</th></tr>
                         </thead>
                         <tbody>
                             {question.opcoes && question.opcoes.map((o, index) => (
@@ -60,6 +56,10 @@ function VoteForm({ question, onVoteComplete }) {
                             ))}
                         </tbody>
                     </Table>
+                    <FormGroup>
+                    <b>Data de publicação:</b>
+                    <p>{moment(question.pub_data).format("YYYY-MM-DD HH:mm")}</p>
+                </FormGroup>
                 </FormGroup>
                 <Button color="primary">Votar</Button>
             </Form>

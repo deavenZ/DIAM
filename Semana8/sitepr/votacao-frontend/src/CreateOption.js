@@ -24,6 +24,7 @@ function CreateOption() {
       },
       body: JSON.stringify({
         opcao_texto: optionText,
+        questao: id
       }),
     })
       .then(response => response.json())
@@ -53,7 +54,7 @@ function CreateOption() {
         </div>
         <div className="form-actions">
           <button type="submit" className="button">Adicionar Opção</button>
-          <button type="button" onClick={() => navigate(`/question/${id}`)} className="button">Cancelar</button>
+          <button type="button" onClick={() => navigate(`/`)} className="button">Cancelar</button>
         </div>
       </form>
     </div>
