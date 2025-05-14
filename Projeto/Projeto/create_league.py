@@ -1,27 +1,18 @@
 import os
 import sys
 import django
-from django.core.files import File
+from django.core.files.base import ContentFile
 
-# Adicionar o diretório do projeto ao PYTHONPATH
 current_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_path)
 
-# Configurar o ambiente Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pontapedesaida.settings')
 django.setup()
 
-from bd.models import liga
+from bd.models import Liga
 
+# Cria uma nova liga na base de dados
 def create_league(nome, logo_path, pais):
-    """
-    Cria uma nova liga no banco de dados
-    
-    Args:
-        nome (str): Nome da liga
-        logo_path (str): Caminho para o arquivo de logo
-        pais (str): País da liga
-    """
     try:
         print(f"Tentando criar liga: {nome}")
         print(f"Caminho do logo: {logo_path}")
@@ -31,26 +22,23 @@ def create_league(nome, logo_path, pais):
             print(f"ERRO: Arquivo de logo não encontrado: {logo_path}")
             return
             
-        # Verificar se a liga já existe no banco de dados
-        if liga.objects.filter(nome=nome).exists():
+        # Verifica se a liga já existe na base de dados
+        if Liga.objects.filter(nome=nome).exists():
             print(f"Liga '{nome}' já existe no banco de dados.")
             return
             
-        # Abrir o arquivo de logo
+        # Abre o arquivo onde estão os logos das ligas
         with open(logo_path, 'rb') as f:
             # Criar a liga
-            nova_liga = liga(
-                nome=nome,
-                pais=pais
-            )
-            # Salvar a liga primeiro para ter um ID
+            nova_liga = Liga(nome=nome, pais=pais)
+
+            # Guarda a liga primeiro para ter um ID
             nova_liga.save()
+
             # Adicionar o logo
-            nova_liga.logo.save(
-                os.path.basename(logo_path),
-                File(f),
-                save=True
-            )
+            content = f.read()
+            nova_liga.logo.save(os.path.basename(logo_path), ContentFile(content), save=True)
+
         print(f"Liga '{nome}' criada com sucesso!")
     except Exception as e:
         print(f"Erro ao criar liga '{nome}': {str(e)}")
@@ -93,8 +81,4 @@ if __name__ == "__main__":
     # Criar cada liga
     for liga_info in ligas:
         logo_path = os.path.join('frontend', 'public', 'comp_logos', f"{liga_info['logo_nome']}.png")
-        create_league(
-            nome=liga_info['nome'],
-            logo_path=logo_path,
-            pais=liga_info['pais']
-        )
+        create_league(nome=liga_info['nome'], logo_path=logo_path, pais=liga_info['pais'])

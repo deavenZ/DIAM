@@ -11,7 +11,7 @@ sys.path.append(current_path)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'pontapedesaida.settings')
 django.setup()
 
-from bd.models import liga
+from bd.models import Liga
 
 def reset_league_ids():
     """
@@ -19,7 +19,7 @@ def reset_league_ids():
     """
     try:
         # Deletar todas as ligas
-        liga.objects.all().delete()
+        Liga.objects.all().delete()
         
         # Resetar a sequência de IDs
         with connection.cursor() as cursor:
