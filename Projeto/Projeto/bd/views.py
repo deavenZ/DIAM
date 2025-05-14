@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
 
 @api_view(['POST'])
 def signup(request):
@@ -32,4 +34,19 @@ def login_view(request):
     return Response({'message': 'Logged in successfully'})
  else:
     return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['POST'])
+def logout_view(request):
+    logout(request)
+    return Response({'message': 'Logged out successfully'})
+
+@api_view(['GET'])
+def user_view(request):
+    if request.user.is_authenticated:
+        return Response({
+            'username': request.user.username,
+            'email': request.user.email,
+            'is_staff': request.user.is_staff
+        })
+    return Response({'error': 'User not authenticated'}, status=status.HTTP_401_UNAUTHORIZED)
 

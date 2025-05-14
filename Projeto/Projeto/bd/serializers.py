@@ -26,3 +26,9 @@ class clubeSerializer(serializers.ModelSerializer):
     class Meta:
         model = clube
         fields = ['nome', 'emblema', 'liga']
+
+class ligaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = liga
+        fields = ['nome', 'logo', 'pais']
+
