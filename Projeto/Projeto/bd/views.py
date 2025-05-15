@@ -29,8 +29,14 @@ def register(request):
         )
     if User.objects.filter(username=username).exists():
         return Response(
-            {"error": "Username already exists"}, status=status.HTTP_400_BAD_REQUEST
+            {"error": "Username already exists!"}, status=status.HTTP_400_BAD_REQUEST
         )
+    
+    if User.objects.filter(email=email).exists():
+        return Response(
+            {"error": "This email is already being used!"}, status=status.HTTP_400_BAD_REQUEST
+        )
+    
     user = User.objects.create_user(username=username, email=email, password=password)
     Utilizador.objects.create(
         user=user,
@@ -70,7 +76,7 @@ def login_view(request):
         )
     else:
         return Response(
-            {"error": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED
+            {"error": 'Username ou senha inválidos!'}, status=status.HTTP_401_UNAUTHORIZED
         )
 
 

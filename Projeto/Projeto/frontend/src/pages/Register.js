@@ -62,7 +62,7 @@ function Register() {
       navigate('/');
     } catch (err) {
       console.error('Registration error:', err);
-      setError(err.response?.data?.message || 'Erro ao criar conta');
+      setError(err.response?.data?.error);
     } finally {
       setIsLoading(false);
     }
