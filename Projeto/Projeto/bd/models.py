@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
 
 class Liga(models.Model):
@@ -25,10 +26,14 @@ class Utilizador(models.Model):
     username = models.CharField(max_length=100, null=True, blank=True)
     nome = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(max_length=100, null=True, blank=True)
-    avatar = models.ImageField(upload_to="avatars", null=True, blank=True)
+    avatar = models.ImageField(
+        upload_to="avatars",
+        default="frontend\public\default_avatar.png",
+    )
     bio = models.TextField(max_length=100, null=True, blank=True)
     userType = models.IntegerField(choices=TIPO_UTILIZADOR, default=0)
     favClub = models.ForeignKey(Clube, on_delete=models.SET_NULL, null=True, blank=True)
+    joinDate = models.DateTimeField("joinDate", default=timezone.now)
 
 
 class Post(models.Model):

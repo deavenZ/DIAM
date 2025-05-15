@@ -19,7 +19,16 @@ class VotacaoSerializer(serializers.ModelSerializer):
 class UtilizadorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Utilizador
-        fields = ["username", "nome", "email", "avatar", "bio", "userType", "fav_club"]
+        fields = [
+            "username",
+            "nome",
+            "email",
+            "avatar",
+            "bio",
+            "userType",
+            "favClub",
+            "joinDate",
+        ]
 
 
 class PostSerializer(serializers.ModelSerializer):

@@ -31,12 +31,13 @@ def register(request):
         return Response(
             {"error": "Username already exists!"}, status=status.HTTP_400_BAD_REQUEST
         )
-    
+
     if User.objects.filter(email=email).exists():
         return Response(
-            {"error": "This email is already being used!"}, status=status.HTTP_400_BAD_REQUEST
+            {"error": "This email is already being used!"},
+            status=status.HTTP_400_BAD_REQUEST,
         )
-    
+
     user = User.objects.create_user(username=username, email=email, password=password)
     Utilizador.objects.create(
         user=user,
@@ -44,6 +45,7 @@ def register(request):
         nome="",
         email=email,
         userType=0,  # User normal
+        joinDate=user.date_joined,
     )
     return Response(
         {"message": "User " + user.username + " created successfully"},
@@ -76,7 +78,8 @@ def login_view(request):
         )
     else:
         return Response(
-            {"error": 'Username ou senha inválidos!'}, status=status.HTTP_401_UNAUTHORIZED
+            {"error": "Username ou senha inválidos!"},
+            status=status.HTTP_401_UNAUTHORIZED,
         )
 
 

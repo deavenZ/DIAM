@@ -8,7 +8,7 @@ function Profile() {
   const [image, setImage] = useState(null);
   const [profile, setProfile] = useState([]);
   const [previewUrl, setPreviewUrl] = useState('');
-
+  const [joinDate, setJoinDate] = useState(null);
 
 
   const { user, updateProfile, getProfileInfo } = useAuth();
@@ -16,7 +16,8 @@ function Profile() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    profile_picture: '',
+    avatar: '',
+    bio: '',
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
@@ -27,10 +28,17 @@ function Profile() {
   const getProfile = () => {
     getProfileInfo()
       .then(response => {
-        setProfile(response.data);
-        setUsername(response.data.username);
-        setImage(response.data.profile_picture);
-        setPreviewUrl(response.data.profile_picture);
+        console.log("Profile response:", response);
+        setProfile(response);
+        setUsername(response.username);
+        setImage(response.avatar);
+        setPreviewUrl(response.avatar);
+        setJoinDate(response.joinDate);
+        setFormData({
+          name: response.name,
+          email: response.email,
+          avatar: response.avatar,
+        });
       })
       .catch(error => {
         console.error('Error fetching profile:', error);
@@ -54,10 +62,6 @@ function Profile() {
     }
   };
 
-  function getCSRFToken() {
-    return document.cookie.split('; ').find(row => row.startsWith('csrftoken='))?.split('=')[1];
-  }
-
   const handleUpload = (e) => {
     e.preventDefault();
     if (image) {
@@ -72,8 +76,6 @@ function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Submit profile updates to backend
-    // This will be implemented when we connect to the backend
     setIsEditing(false);
   };
 
@@ -86,7 +88,7 @@ function Profile() {
   };
 
   if (!user) {
-    return <div>Loading...</div>;
+    navigate('/');
   }
 
   return (
@@ -104,6 +106,17 @@ function Profile() {
       {isEditing ? (
         <form onSubmit={handleSubmit} className="profile-form">
           <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={username}
+              onChange={handleChange}
+              disabled={true}
+            />
+          </div>
+          <div className="form-group">
             <label htmlFor="name">Nome</label>
             <input
               type="text"
@@ -111,14 +124,12 @@ function Profile() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              required
             />
           </div>
           <div className="form-group">
-            <h3>Carregar imagem de perfil</h3>
+            <label htmlFor="image">Carregar imagem de perfil</label>
             <img src={"http://127.0.0.1:8000" + image} alt="image" height="150px" /><br />
             <input type="file" onChange={handleImageChange} accept="image/*" />
-            <button onClick={(e) => handleUpload(e, profile)}>Upload</button><br />
             {previewUrl && <img src={previewUrl} alt="Preview" height="100px" />}
           </div>
           <div className="form-group">
@@ -129,7 +140,18 @@ function Profile() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="bio">Biografia</label>
+            <textarea
+              id="bio"
+              name="bio"
+              value={formData.bio}
+              onChange={handleChange}
+              rows="4"
+              placeholder="Conte um pouco sobre você..."
             />
           </div>
 
@@ -177,9 +199,12 @@ function Profile() {
         </form>
       ) : (
         <div className="profile-info">
+          <div className="info-group welcome-text">
+            <h1>{user && user.name ? `Bem-vindo, ${user.name}` : 'Bem-vindo'}</h1>
+          </div>
           <div className="info-group">
-            <label>Nome</label>
-            <p>{user.name}</p>
+            <label>Username</label>
+            <p>{user.username}</p>
           </div>
 
           <div className="info-group">
@@ -188,8 +213,15 @@ function Profile() {
           </div>
 
           <div className="info-group">
+            <label>Biografia:</label>
+            <p>{profile.bio || 'Nenhuma biografia adicionada.'}</p>
+          </div>
+
+          <div className="info-group">
             <label>Membro desde</label>
-            <p>{new Date(user.joinDate).toLocaleDateString()}</p>
+            <p>{joinDate
+              ? new Date(joinDate).toLocaleDateString('pt-PT')
+              : 'Data indisponível'}</p>
           </div>
         </div>
       )}

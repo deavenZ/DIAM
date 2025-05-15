@@ -49,7 +49,6 @@ export const AuthProvider = ({ children }) => {
 
   const getProfileInfo = async () => {
     const response = await userService.getProfile();
-    setUser(response.data);
     return response.data;
   };
 
