@@ -4,7 +4,7 @@ import '../styles/Footer.css';
 function Footer() {
   return (
     <footer className="app-footer">
-      <p>&copy; 2024 Pontapé de Saída. Todos os direitos reservados.</p>
+      <p>&copy; 2025 Pontapé de Saída. Todos os direitos reservados.</p>
     </footer>
   );
 }

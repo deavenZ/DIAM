@@ -12,8 +12,9 @@ const api = axios.create({
 // Interceptor para adicionar o token de autenticação
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
+  console.log('Token enviado no header:', token);
   if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Token ${token}`;
   }
   return config;
 }
@@ -42,9 +43,31 @@ export const voteService = {
 export const userService = {
   login: (credentials) => api.post('/auth/login/', credentials),
   register: (userData) => api.post('/auth/register/', userData),
-  getProfile: () => api.get('/auth/user/'),
-  updateProfile: (data) => api.put('/auth/user/', data),
+  getUser: () => api.get('/auth/user/'),
+  getProfile: () => api.get('/profile/'),
+  updateProfile: (data) => {
+    const formData = new FormData();
+    for (const key in data) {
+      if (data[key] !== undefined && data[key] !== null) {
+        formData.append(key, data[key]);
+      }
+    }
+    return api.put('/profile/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'X-CSRFToken': getCSRFToken()
+      },
+      withCredentials: true
+    });
+  },
   changePassword: (data) => api.post('/auth/change-password/', data),
 };
+
+function getCSRFToken() {
+  return document.cookie
+    .split('; ')
+    .find(row => row.startsWith('csrftoken='))
+    ?.split('=')[1];
+}
 
 export default api; 

@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      userService.getProfile()
+      userService.getUser()
         .then(response => {
           setUser(response.data);
         })
@@ -47,6 +47,12 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const getProfileInfo = async () => {
+    const response = await userService.getProfile();
+    setUser(response.data);
+    return response.data;
+  };
+
   const updateProfile = async (data) => {
     const response = await userService.updateProfile(data);
     setUser(response.data);
@@ -60,6 +66,7 @@ export const AuthProvider = ({ children }) => {
     register,
     logout,
     updateProfile,
+    getProfileInfo,
   };
 
   return (

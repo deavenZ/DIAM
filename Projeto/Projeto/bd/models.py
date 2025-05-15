@@ -1,40 +1,56 @@
+from django.contrib.auth.models import User
 from django.db import models
+
 
 class Liga(models.Model):
     nome = models.CharField(max_length=100)
-    logo = models.ImageField(upload_to='logos/ligas')
+    logo = models.ImageField(upload_to="logos/ligas")
     pais = models.CharField(max_length=100)
+
 
 class Clube(models.Model):
     nome = models.CharField(max_length=100)
-    emblema = models.ImageField(upload_to='logos/clubes')
+    emblema = models.ImageField(upload_to="logos/clubes")
     liga = models.ForeignKey(Liga, on_delete=models.CASCADE)
 
+
 class Utilizador(models.Model):
-    nome = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
-    avatar = models.ImageField(upload_to='avatars', null=True, blank=True)
-    favClub = models.ForeignKey(Clube, on_delete=models.SET_NULL, null=True, blank=True)
+    TIPO_UTILIZADOR = (
+        (0, "Utilizador Normal"),
+        (1, "Moderador"),
+        (2, "Administrador"),
+    )
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    username = models.CharField(max_length=100, null=True, blank=True)
+    nome = models.CharField(max_length=100, null=True, blank=True)
+    email = models.EmailField(max_length=100, null=True, blank=True)
+    avatar = models.ImageField(upload_to="avatars", null=True, blank=True)
     bio = models.TextField(max_length=100, null=True, blank=True)
-    userType = models.IntegerField(default=0)
+    userType = models.IntegerField(choices=TIPO_UTILIZADOR, default=0)
+    favClub = models.ForeignKey(Clube, on_delete=models.SET_NULL, null=True, blank=True)
+
 
 class Post(models.Model):
     autor = models.ForeignKey(Utilizador, on_delete=models.CASCADE)
-    data = models.DateTimeField('data de publicação')
-    texto = models.TextField('post')
+    data = models.DateTimeField("data de publicação")
+    texto = models.TextField("post")
     clube = models.ForeignKey(Clube, on_delete=models.SET_NULL, null=True, blank=True)
     upvoteNumber = models.IntegerField(default=0)
 
+
 class Comentarios(models.Model):
     autor = models.ForeignKey(Utilizador, on_delete=models.CASCADE)
-    data = models.DateTimeField('data de publicação')
-    texto = models.TextField('comentário')
+    data = models.DateTimeField("data de publicação")
+    texto = models.TextField("comentário")
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     likenumber = models.IntegerField(default=0)
 
+
 class Votacao(models.Model):
     votacao_texto = models.CharField(max_length=100)
-    data_pub = models.DateTimeField('data de publicação')
+    data_pub = models.DateTimeField("data de publicação")
+
 
 class Opcao(models.Model):
     questao = models.ForeignKey(Votacao, on_delete=models.CASCADE)

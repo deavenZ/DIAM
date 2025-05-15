@@ -1,34 +1,46 @@
 from rest_framework import serializers
-from .models import post, comentarios, votacao, opcao, clube
+from .models import Post, Comentarios, Votacao, Opcao, Clube, Liga, Utilizador
 
-class postSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = post
-        fields = ['autor', 'data', 'texto', 'clube', 'upvoteNumber']
 
-class comentariosSerializer(serializers.ModelSerializer):
+class OpcaoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = comentarios
-        fields = ['autor', 'data', 'texto', 'postAssociado', 'likenumber'] 
+        model = Opcao
+        fields = ["questao", "opcao_texto", "votos"]
 
-class votacaoSerializer(serializers.ModelSerializer):
-    votacao_set = opcaoSerializer(many=True, read_only=True)
-    class Meta:
-        model = votacao
-        fields = ['votacao_texto', 'data_pub']
 
-class opcaoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = opcao
-        fields = ['questao', 'opcao_texto', 'votos']
-    
-class clubeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = clube
-        fields = ['nome', 'emblema', 'liga']
+class VotacaoSerializer(serializers.ModelSerializer):
+    votacao_set = OpcaoSerializer(many=True, read_only=True)
 
-class ligaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = liga
-        fields = ['nome', 'logo', 'pais']
+        model = Votacao
+        fields = ["votacao_texto", "data_pub", "votacao_set"]
 
+
+class UtilizadorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Utilizador
+        fields = ["username", "nome", "email", "avatar", "bio", "userType", "fav_club"]
+
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ["autor", "data", "texto", "clube", "upvoteNumber"]
+
+
+class ComentariosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comentarios
+        fields = ["autor", "data", "texto", "postAssociado", "likenumber"]
+
+
+class ClubeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Clube
+        fields = ["nome", "emblema", "liga"]
+
+
+class LigaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Liga
+        fields = ["nome", "logo", "pais"]

@@ -21,7 +21,6 @@ function Header() {
       <nav className="nav-menu">
         <Link to="/" className="nav-logo">Pontapé de Saída</Link>
         <div className="nav-links">
-          <Link to="/" className="nav-link">Home</Link>
           {user ? (
             <>
               <Link to="/profile" className="profile-link">
@@ -36,7 +35,10 @@ function Header() {
               </button>
             </>
           ) : (
-            <Link to="/login" className="nav-link">Entrar</Link>
+            <div>
+              <Link to="/login" className="nav-link">Entrar</Link>
+              <Link to="/register" className="nav-link">Registrar</Link>
+            </div>
           )}
         </div>
       </nav>
