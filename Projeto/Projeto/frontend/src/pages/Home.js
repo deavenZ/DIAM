@@ -2,25 +2,39 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import '../styles/Home.css';
 
 function Home() {
+  const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [votes, setVotes] = useState([]);
 
   useEffect(() => {
-    // TODO: Fetch posts and votes from backend
-    // This will be implemented when we connect to the backend
+    // Buscar posts e votações da API somente se estiver logado
+    fetchPosts();
+    fetchVotes();
   }, []);
+
+  // Implementar de acordo com a API
+  const fetchPosts = async () => {
+    // fetch / axios para obter posts
+  };
+
+  const fetchVotes = async () => {
+    // fetch / axios para obter votações
+  };
 
   return (
     <div className="home-container">
       <div className="posts-section">
         <div className="posts-header">
           <h2>Posts Recentes</h2>
-          <Link to="/post/new" className="new-post-button">
-            Criar Novo Post
-          </Link>
+          {user && (
+            <Link to="/post/new" className="new-post-button">
+              Criar Novo Post
+            </Link>
+          )}
         </div>
         <div className="posts-list">
           {posts.map((post) => (
@@ -44,7 +58,7 @@ function Home() {
               <h3>{vote.title}</h3>
               <p>{vote.description}</p>
               <div className="vote-options">
-                {/* Vote options will be rendered here */}
+                {/* Votações */}
               </div>
             </div>
           ))}

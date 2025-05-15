@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 import '../styles/Register.css';
 
@@ -12,7 +13,7 @@ function Register() {
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { register } = useAuth();
+  const { register, login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,9 +26,13 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
 
     // Validação básica
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!regex.test(formData.email)) {
+      setError('O email não tem o formato certo');
+      return;
+    }
     if (formData.password !== formData.confirmPassword) {
       setError('As senhas não coincidem');
       return;
@@ -42,9 +47,16 @@ function Register() {
 
     try {
       console.log('Attempting registration with:', formData);
+      // Registra-se
       await register({
         username: formData.username,
         email: formData.email,
+        password: formData.password
+      });
+
+      // E loga-se no imediato
+      await login({
+        username: formData.username,
         password: formData.password
       });
       console.log('Registration successful');
@@ -111,8 +123,8 @@ function Register() {
               disabled={isLoading}
             />
           </div>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="register-button"
             disabled={isLoading}
           >

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import axios from 'axios';
 import '../styles/Login.css';
 
 function Login() {
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: '',
   });
   const [error, setError] = useState('');
@@ -23,13 +24,12 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
     setIsLoading(true);
 
     try {
       console.log('Attempting login with:', formData);
-      await login(formData);
-      console.log('Login successful');
+      const user = await login({ username: formData.username, password: formData.password });
+      console.log('Login successful', user);
       navigate('/');
     } catch (err) {
       console.error('Login error:', err);
@@ -46,12 +46,12 @@ function Login() {
         {error && <div className="error-message">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="username">Username</label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
+              type="username"
+              id="username"
+              name="username"
+              value={formData.username}
               onChange={handleChange}
               required
               disabled={isLoading}
@@ -69,8 +69,8 @@ function Login() {
               disabled={isLoading}
             />
           </div>
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="login-button"
             disabled={isLoading}
           >

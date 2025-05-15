@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL = 'http://localhost:8000/bd/api';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -16,7 +16,8 @@ api.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
-});
+}
+);
 
 // Serviços de Posts
 export const postService = {
@@ -41,8 +42,8 @@ export const voteService = {
 export const userService = {
   login: (credentials) => api.post('/auth/login/', credentials),
   register: (userData) => api.post('/auth/register/', userData),
-  getProfile: () => api.get('/auth/profile/'),
-  updateProfile: (data) => api.put('/auth/profile/', data),
+  getProfile: () => api.get('/auth/user/'),
+  updateProfile: (data) => api.put('/auth/user/', data),
   changePassword: (data) => api.post('/auth/change-password/', data),
 };
 
