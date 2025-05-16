@@ -32,7 +32,7 @@
 
 .profile-form {
   background-color: white;
-  padding: 2rem;
+  padding: 0rem 2rem 1rem 2rem;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -54,6 +54,13 @@
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+}
+
+.password-title {
+  margin: 2.5rem 0 0.5rem 0;
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .password-section {
@@ -124,4 +131,27 @@
   font-weight: bold;
   color: #333;
   margin: 0;
+}
+
+.profile-info-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.profile-info-horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.profile-info-content {
+  flex: 1;
+}
+
+.profile-info-avatar {
+  margin-left: 2rem;
+  display: flex;
+  align-items: flex-start;
 }

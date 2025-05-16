@@ -1,16 +1,18 @@
 from django.contrib.auth.models import User
 from .models import Utilizador
-from .serializers import UtilizadorSerializer
+from .serializers import UtilizadorSerializer, ClubeSerializer, LigaSerializer
+from .models import Clube, Liga
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import MultiPartParser
-from rest_framework import status
+from rest_framework import status, generics
 
 
 @api_view(["POST"])
+@permission_classes([AllowAny])
 def register(request):
 
     username = request.data.get("username")
@@ -54,6 +56,7 @@ def register(request):
 
 
 @api_view(["POST"])
+@permission_classes([AllowAny])
 def login_view(request):
 
     username = request.data.get("username")
@@ -123,3 +126,38 @@ def profile_view(request):
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def change_password(request):
+    user = request.user
+    current_password = request.data.get("currentPassword")
+    new_password = request.data.get("newPassword")
+    confirm_password = request.data.get("confirmPassword")
+
+    if not user.check_password(current_password):
+        return Response({"error": "Senha atual incorreta."}, status=400)
+    if new_password != confirm_password:
+        return Response({"error": "As novas passwords não coincidem."}, status=400)
+    user.set_password(new_password)
+    user.save()
+    return Response({"message": "Password alterada com sucesso!"})
+
+
+@api_view(["GET"])
+def clubes_por_liga(request, liga_id):
+    clubes = Clube.objects.filter(liga_id=liga_id)
+    serializer = ClubeSerializer(clubes, many=True)
+    return Response(serializer.data)
+
+
+class LigaListView(generics.ListAPIView):
+    queryset = Liga.objects.all()
+    serializer_class = LigaSerializer
+    permission_classes = [AllowAny]
+
+
+class ClubeListView(generics.ListAPIView):
+    queryset = Clube.objects.all()
+    serializer_class = ClubeSerializer

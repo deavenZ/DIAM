@@ -46,10 +46,10 @@ class ComentariosSerializer(serializers.ModelSerializer):
 class ClubeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Clube
-        fields = ["nome", "emblema", "liga"]
+        fields = ["id", "nome", "emblema", "liga"]
 
 
 class LigaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Liga
-        fields = ["nome", "logo", "pais"]
+        fields = ["id", "nome", "logo", "pais"]

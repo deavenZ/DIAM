@@ -28,7 +28,7 @@ class Utilizador(models.Model):
     email = models.EmailField(max_length=100, null=True, blank=True)
     avatar = models.ImageField(
         upload_to="avatars",
-        default="frontend\public\default_avatar.png",
+        default="avatars\default_avatar.png",
     )
     bio = models.TextField(max_length=100, null=True, blank=True)
     userType = models.IntegerField(choices=TIPO_UTILIZADOR, default=0)

@@ -14,8 +14,12 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   console.log('Token enviado no header:', token);
-  if (token) {
+  if (token &&
+    !config.url.endsWith('/auth/login/') &&
+    !config.url.endsWith('/auth/register/')) {
     config.headers.Authorization = `Token ${token}`;
+  } else {
+    delete config.headers.Authorization;
   }
   return config;
 }
@@ -61,7 +65,17 @@ export const userService = {
       withCredentials: true
     });
   },
-  changePassword: (data) => api.post('/auth/change-password/', data),
+  changePassword: (data) => api.post('/change-password/', data),
+};
+
+// Serviços de Ligas e Clubes
+export const leagueService = {
+  getAll: () => api.get('/ligas/'),
+};
+
+export const clubService = {
+  getAll: () => api.get('/clubes/'),
+  getByLiga: (ligaId) => api.get(`/ligas/${ligaId}/clubes/`),
 };
 
 function getCSRFToken() {

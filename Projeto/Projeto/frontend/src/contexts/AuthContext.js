@@ -58,6 +58,11 @@ export const AuthProvider = ({ children }) => {
     return response.data;
   };
 
+  const changePassword = async (data) => {
+    const response = await userService.changePassword(data);
+    return response.data;
+  };
+
   const value = {
     user,
     loading,
@@ -66,6 +71,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     updateProfile,
     getProfileInfo,
+    changePassword,
   };
 
   return (

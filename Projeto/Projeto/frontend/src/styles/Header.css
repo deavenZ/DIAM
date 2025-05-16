@@ -56,6 +56,26 @@
   background-color: rgba(46, 125, 50, 0.1);
 }
 
+.username-label {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.2rem;
+  font-weight: 600;
+  color: #222;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  padding: 0.35em 0.8em;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.profile-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
 .user-avatar {
   width: 40px;
   height: 40px;

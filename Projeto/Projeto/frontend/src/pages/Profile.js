@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { leagueService, clubService } from '../services/api';
 import '../styles/Profile.css';
 
 function Profile() {
@@ -9,9 +10,13 @@ function Profile() {
   const [profile, setProfile] = useState([]);
   const [previewUrl, setPreviewUrl] = useState('');
   const [joinDate, setJoinDate] = useState(null);
+  const [ligas, setLigas] = useState([]);
+  const [clubesDaLiga, setClubesDaLiga] = useState([]);
+  const [allClubes, setAllClubes] = useState([]);
+  const [selectedLiga, setSelectedLiga] = useState('');
 
 
-  const { user, updateProfile, getProfileInfo } = useAuth();
+  const { user, updateProfile, getProfileInfo, changePassword } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -23,6 +28,8 @@ function Profile() {
     confirmPassword: '',
   });
 
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   const getProfile = () => {
@@ -32,51 +39,132 @@ function Profile() {
         setProfile(response);
         setUsername(response.username);
         setImage(response.avatar);
-        setPreviewUrl(response.avatar);
         setJoinDate(response.joinDate);
+
+        // Encontrar o clube favorito no array allClubes
+        const clubeFav = allClubes.find(c => c.id === response.favClub);
+        // Obter o id da liga do clube favorito
+        const ligaId = clubeFav ? clubeFav.liga : "";
+
+        setSelectedLiga(ligaId ? String(ligaId) : "");
         setFormData({
-          name: response.name,
-          email: response.email,
-          avatar: response.avatar,
+          nome: response.nome || '',
+          email: response.email || '',
+          avatar: response.avatar || '',
+          bio: response.bio || '',
+          favClub: response.favClub ? response.favClub : '',
         });
+        setPreviewUrl('');
+        setLoading(false);
       })
       .catch(error => {
         console.error('Error fetching profile:', error);
-      });
-  }
+        setLoading(false);
+      })
+  };
 
+  useEffect(() => {
+    setLoading(true);
+    Promise.all([
+      leagueService.getAll().then(res => setLigas(res.data)),
+      clubService.getAll().then(res => setAllClubes(res.data)),
+      getProfile()
+    ]).then(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    if (selectedLiga && !isNaN(Number(selectedLiga))) {
+      console.log("selectedLiga (deve ser id):", selectedLiga);
+      clubService.getByLiga(selectedLiga).then(res => setClubesDaLiga(res.data));
+    } else {
+      setClubesDaLiga([]);
+    }
+  }, [selectedLiga]);
+
+  useEffect(() => {
+    if (profile.favClub && allClubes.length > 0) {
+      const clubeFav = allClubes.find(c => c.id === profile.favClub);
+      const ligaId = clubeFav ? clubeFav.liga : "";
+      setSelectedLiga(ligaId ? String(ligaId) : "");
+      setFormData(prev => ({
+        ...prev,
+        favClub: profile.favClub
+      }));
+    }
+  }, [profile, allClubes]);
 
   useEffect(() => {
     getProfile();
   }, []);
 
+  useEffect(() => {
+    if (!user) {
+      navigate('/');
+    }
+  }, [user, navigate]);
+
   const handleImageChange = (e) => {
     e.preventDefault();
     const image = e.target.files[0];
-    if (image) {
+    if (image && image instanceof Blob) {
       setImage(image);
       setPreviewUrl(URL.createObjectURL(image));
-    } else {
-      setImage(null);
-      setPreviewUrl('');
     }
   };
-
-  const handleUpload = (e) => {
-    e.preventDefault();
-    if (image) {
-      const updatedProfile = profile;
-      updateProfile(updatedProfile)
-        .then(() => getProfile())
-        .catch(err => console.error('Erro ao atualizar perfil:', err));
-      setPreviewUrl('');
-    }
-  };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsEditing(false);
+
+    // Prepara os dados para envio
+    const dataToSend = {
+      nome: formData.nome,
+      email: formData.email,
+      bio: formData.bio,
+      favClub: formData.favClub,
+    };
+
+    // Se o utilizador selecionou uma nova imagem, inclui-a
+    if (previewUrl && image instanceof File) {
+      dataToSend.avatar = image;
+    }
+
+    try {
+      await updateProfile(dataToSend);
+      await getProfile(); // Atualiza o perfil no frontend
+      setIsEditing(false);
+      setPreviewUrl('');
+    } catch (err) {
+      console.error('Erro ao atualizar perfil:', err);
+    }
+  };
+
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    if (formData.newPassword !== formData.confirmPassword) {
+      alert("As novas passwords não coincidem!");
+      return;
+    }
+
+    if (formData.newPassword.length < 6) {
+      alert("A nova password deve ter pelo menos 6 caracteres!");
+      return;
+    }
+    try {
+      await changePassword({
+        currentPassword: formData.currentPassword,
+        newPassword: formData.newPassword,
+        confirmPassword: formData.confirmPassword,
+      });
+      alert("Password alterada com sucesso!");
+      setFormData(prev => ({
+        ...prev,
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      }));
+    } catch (err) {
+      alert("Erro ao alterar password.");
+    }
   };
 
   const handleChange = (e) => {
@@ -87,9 +175,29 @@ function Profile() {
     }));
   };
 
-  if (!user) {
-    navigate('/');
+  if (
+    loading ||
+    !profile ||
+    !profile.nome ||
+    ligas.length === 0 ||
+    allClubes.length === 0
+  ) {
+    return (
+      <div style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "60vh",
+        fontSize: "1.5rem"
+      }}>
+        Loading...
+      </div>
+    );
   }
+  if (!user) {
+    return null; // Ou podes mostrar um spinner/loading se quiseres
+  }
+
 
   return (
     <div className="profile-container">
@@ -104,124 +212,194 @@ function Profile() {
       </div>
 
       {isEditing ? (
-        <form onSubmit={handleSubmit} className="profile-form">
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={username}
-              onChange={handleChange}
-              disabled={true}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="name">Nome</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="image">Carregar imagem de perfil</label>
-            <img src={"http://127.0.0.1:8000" + image} alt="image" height="150px" /><br />
-            <input type="file" onChange={handleImageChange} accept="image/*" />
-            {previewUrl && <img src={previewUrl} alt="Preview" height="100px" />}
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="bio">Biografia</label>
-            <textarea
-              id="bio"
-              name="bio"
-              value={formData.bio}
-              onChange={handleChange}
-              rows="4"
-              placeholder="Conte um pouco sobre você..."
-            />
-          </div>
-
-          <div className="password-section">
-            <h3>Alterar Senha</h3>
+        <div>
+          <form onSubmit={handleSubmit} className="profile-form">
             <div className="form-group">
-              <label htmlFor="currentPassword">Senha Atual</label>
+              <label htmlFor="username">Username</label>
               <input
-                type="password"
-                id="currentPassword"
-                name="currentPassword"
-                value={formData.currentPassword}
+                type="text"
+                id="username"
+                name="username"
+                value={username}
+                onChange={handleChange}
+                disabled={true}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="nome">Nome</label>
+              <input
+                type="text"
+                id="nome"
+                name="nome"
+                value={formData.nome}
                 onChange={handleChange}
               />
             </div>
-
             <div className="form-group">
-              <label htmlFor="newPassword">Nova Senha</label>
+              <label htmlFor="image">Carregar imagem de perfil</label>
+              <img
+                src={previewUrl || ("http://127.0.0.1:8000" + image)}
+                alt="image"
+                height="150px"
+                width="150px"
+                style={{ borderRadius: "50%" }}
+              /><br />
+              <input type="file" onChange={handleImageChange} accept="image/*" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Email</label>
               <input
-                type="password"
-                id="newPassword"
-                name="newPassword"
-                value={formData.newPassword}
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
                 onChange={handleChange}
               />
             </div>
-
             <div className="form-group">
-              <label htmlFor="confirmPassword">Confirmar Nova Senha</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                name="confirmPassword"
-                value={formData.confirmPassword}
+              <label htmlFor="bio">Biografia</label>
+              <textarea
+                id="bio"
+                name="bio"
+                value={formData.bio}
                 onChange={handleChange}
+                rows="4"
+                placeholder="Conte um pouco sobre você..."
               />
             </div>
-          </div>
+            <div className="form-group">
+              <label htmlFor="liga">Liga</label>
+              <select
+                id="liga"
+                value={selectedLiga}
+                onChange={e => {
+                  setSelectedLiga(e.target.value);
+                  setFormData(prev => ({ ...prev, favClub: "" })); // Limpa o clube favorito
+                }}
+              >
+                <option value="">Nenhuma liga e clube selecionados</option>
+                {ligas.map(liga => (
+                  <option key={liga.id} value={liga.id}>{liga.nome}</option>
+                ))}
+              </select>
+            </div>
 
-          <div className="form-actions">
-            <button type="submit" className="save-button">
-              Salvar Alterações
-            </button>
-          </div>
-        </form>
+            <div className="form-group">
+              <label htmlFor="favClub">Clube Favorito</label>
+              <select
+                id="favClub"
+                name="favClub"
+                value={formData.favClub || ''}
+                onChange={e => {
+                  if (e.target.value !== '') {
+                    handleChange(e);
+                  }
+                }}
+                disabled={!selectedLiga}
+              >
+                <option value="">Selecione um clube</option>
+                {clubesDaLiga.map(clube => (
+                  <option key={clube.id} value={clube.id}>{clube.nome}</option>
+                ))}
+              </select>
+            </div>
+            <div className="form-actions">
+              <button type="submit" className="save-button">
+                Salvar Alterações
+              </button>
+            </div>
+          </form>
+          <h2 className="password-title">Alterar Senha</h2>
+          <form onSubmit={handlePasswordChange} className="profile-form" style={{ marginTop: "2rem" }}>
+            <div className="password-section">
+              <div className="form-group">
+                <label htmlFor="currentPassword">Senha Atual</label>
+                <input
+                  type="password"
+                  id="currentPassword"
+                  name="currentPassword"
+                  value={formData.currentPassword}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="newPassword">Nova Senha</label>
+                <input
+                  type="password"
+                  id="newPassword"
+                  name="newPassword"
+                  value={formData.newPassword}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="confirmPassword">Confirmar Nova Senha</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-actions">
+                <button type="submit" className="save-button">
+                  Alterar Senha
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       ) : (
         <div className="profile-info">
-          <div className="info-group welcome-text">
-            <h1>{user && user.name ? `Bem-vindo, ${user.name}` : 'Bem-vindo'}</h1>
+          <div className="welcome-text">
+            <h1>
+              {profile.nome && profile.nome.trim()
+                ? `Bem-vindo, ${profile.nome.split(' ')[0]}`
+                : 'Bem-vindo'}
+            </h1>
           </div>
-          <div className="info-group">
-            <label>Username</label>
-            <p>{user.username}</p>
-          </div>
-
-          <div className="info-group">
-            <label>Email</label>
-            <p>{user.email}</p>
-          </div>
-
-          <div className="info-group">
-            <label>Biografia:</label>
-            <p>{profile.bio || 'Nenhuma biografia adicionada.'}</p>
-          </div>
-
-          <div className="info-group">
-            <label>Membro desde</label>
-            <p>{joinDate
-              ? new Date(joinDate).toLocaleDateString('pt-PT')
-              : 'Data indisponível'}</p>
+          <div className="profile-info-horizontal">
+            <div className="profile-info-content">
+              <div className="info-group">
+                <label>Username</label>
+                <p>{user.username}</p>
+              </div>
+              <div className="info-group">
+                <label>Email</label>
+                <p>{user.email}</p>
+              </div>
+              <div className="info-group">
+                <label>Biografia:</label>
+                <p>{profile.bio || 'Nenhuma biografia adicionada.'}</p>
+              </div>
+              <div className="info-group">
+                <label>Clube Favorito:</label>
+                <p>
+                  {(() => {
+                    const clubeObj = allClubes.find(c => c.id === profile.favClub);
+                    return clubeObj ? clubeObj.nome : 'Nenhum clube selecionado.';
+                  })()}
+                </p>
+              </div>
+              <div className="info-group">
+                <label>Membro desde</label>
+                <p>
+                  {joinDate
+                    ? new Date(joinDate).toLocaleDateString('pt-PT')
+                    : 'Data indisponível'}
+                </p>
+              </div>
+            </div>
+            <div className="profile-info-avatar">
+              <img
+                src={"http://127.0.0.1:8000" + profile.avatar}
+                alt="Avatar"
+                height="120"
+                width="120"
+                style={{ borderRadius: "50%", objectFit: "cover" }}
+              />
+            </div>
           </div>
         </div>
       )}
