@@ -40,7 +40,13 @@ function Header() {
   return (
     <header className="app-header">
       <nav className="nav-menu">
-        <Link to="/" className="nav-logo">Pontapé de Saída</Link>
+        <Link to="/" className="nav-logo">
+          <img
+            src={MEDIA_URL + '/media/logos/site/site1.png'}
+            alt="Logo do site"
+            className="logo-image"
+          />
+        </Link>
         <div className="nav-links">
           {user ? (
             <>

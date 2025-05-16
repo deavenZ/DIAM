@@ -28,7 +28,7 @@ class Utilizador(models.Model):
     email = models.EmailField(max_length=100, null=True, blank=True)
     avatar = models.ImageField(
         upload_to="avatars",
-        default="avatars\default_avatar.png",
+        default="avatars/default_avatar.png",
     )
     bio = models.TextField(max_length=100, null=True, blank=True)
     userType = models.IntegerField(choices=TIPO_UTILIZADOR, default=0)
@@ -39,7 +39,10 @@ class Utilizador(models.Model):
 class Post(models.Model):
     autor = models.ForeignKey(Utilizador, on_delete=models.CASCADE)
     data = models.DateTimeField("data de publicação")
-    texto = models.TextField("post")
+    titulo = models.CharField(max_length=100, default="Título")
+    texto = models.TextField("post", null=True, blank=True)
+    imagem = models.ImageField(upload_to="posts", null=True, blank=True)
+    liga = models.ForeignKey(Liga, on_delete=models.SET_NULL, null=True, blank=True)
     clube = models.ForeignKey(Clube, on_delete=models.SET_NULL, null=True, blank=True)
     upvoteNumber = models.IntegerField(default=0)
 

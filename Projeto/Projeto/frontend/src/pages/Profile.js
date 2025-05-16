@@ -178,7 +178,6 @@ function Profile() {
   if (
     loading ||
     !profile ||
-    !profile.nome ||
     ligas.length === 0 ||
     allClubes.length === 0
   ) {
@@ -242,7 +241,7 @@ function Profile() {
                 alt="image"
                 height="150px"
                 width="150px"
-                style={{ borderRadius: "50%" }}
+                style={{ borderRadius: "10%" }}
               /><br />
               <input type="file" onChange={handleImageChange} accept="image/*" />
             </div>
@@ -395,8 +394,8 @@ function Profile() {
               <img
                 src={"http://127.0.0.1:8000" + profile.avatar}
                 alt="Avatar"
-                height="120"
-                width="120"
+                height="150"
+                width="150"
                 style={{ borderRadius: "50%", objectFit: "cover" }}
               />
             </div>

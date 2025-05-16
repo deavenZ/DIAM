@@ -1,8 +1,9 @@
 .app-footer {
-  background-color: white;
+  background-color: rgba(193, 235, 193, 0.75);
+  ;
   padding: 1rem 0;
   text-align: center;
   color: #666;
   border-top: 2px solid var(--primary-green);
   margin-top: 2rem;
-} 
+}
