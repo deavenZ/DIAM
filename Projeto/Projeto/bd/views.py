@@ -1,14 +1,15 @@
 from django.contrib.auth.models import User
 from .models import Utilizador
-from .serializers import UtilizadorSerializer, ClubeSerializer, LigaSerializer
+from .serializers import UtilizadorSerializer, ClubeSerializer, LigaSerializer, PostSerializer
 from .models import Clube, Liga
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.parsers import MultiPartParser
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status, generics
+from django.utils import timezone
 
 
 @api_view(["POST"])
@@ -143,6 +144,24 @@ def change_password(request):
     user.set_password(new_password)
     user.save()
     return Response({"message": "Password alterada com sucesso!"})
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+@parser_classes([MultiPartParser, FormParser])
+def criar_post(request):
+    user = request.user
+
+    try:
+        utilizador = Utilizador.objects.get(user=user)
+    except Utilizador.DoesNotExist:
+        return Response({"error": "Utilizador não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = PostSerializer(utilizador.id, data=request.data, partial=True)
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])

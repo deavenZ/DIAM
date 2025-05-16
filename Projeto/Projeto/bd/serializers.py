@@ -34,7 +34,7 @@ class UtilizadorSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ["autor", "data", "titulo", "texto", "liga", "clube", "upvoteNumber"]
+        fields = ["autor", "data", "titulo", "texto", "liga", "clube", "upvoteNumber", "imagem"]
 
 
 class ComentariosSerializer(serializers.ModelSerializer):

@@ -67,19 +67,23 @@ function Post() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
+      console.log("Creating new post with data:", formData);
       const data = new FormData();
       data.append("titulo", formData.titulo);
       data.append("texto", formData.texto);
       if (formData.liga) data.append("liga", formData.liga);
       if (formData.clube) data.append("clube", formData.clube);
+      if (!id) data.append("data", new Date().toISOString());
       if (formData.imagem && typeof formData.imagem !== "string") {
         data.append("imagem", formData.imagem);
       }
 
+
       if (id) {
-        await postService.update(id, data);
         setIsEditing(false);
+        await postService.update(id, data);
         setPost({ ...post, ...formData });
       } else {
         await postService.create(data);
