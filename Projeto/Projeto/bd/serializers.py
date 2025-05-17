@@ -53,6 +53,12 @@ class PostSerializer(serializers.ModelSerializer):
     autor = serializers.SerializerMethodField()
     clube = ClubeSerializer(read_only=True)
     liga = LigaSerializer(read_only=True)
+    clube_id = serializers.PrimaryKeyRelatedField(
+        queryset=Clube.objects.all(), source='clube', write_only=True, required=False, allow_null=True
+    )
+    liga_id = serializers.PrimaryKeyRelatedField(
+        queryset=Liga.objects.all(), source='liga', write_only=True, required=False, allow_null=True
+    )
 
     class Meta:
         model = Post
@@ -64,6 +70,8 @@ class PostSerializer(serializers.ModelSerializer):
             "texto",
             "liga",
             "clube",
+            "liga_id",   
+            "clube_id",  
             "upvoteNumber",
             "imagem",
         ]

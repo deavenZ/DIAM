@@ -172,6 +172,12 @@ def criar_post(request):
             {"error": "Utilizador não encontrado."}, status=status.HTTP_404_NOT_FOUND
         )
 
+    data = request.data.copy()
+    if not data.get("liga"):
+        data["liga"] = None
+    if not data.get("clube"):
+        data["clube"] = None
+        
     serializer = PostSerializer(data=request.data, partial=True)
 
     if serializer.is_valid():
@@ -188,7 +194,7 @@ def clubes_por_liga(request, liga_id):
     return Response(serializer.data)
 
 
-@api_view(["GET", "DELETE"])
+@api_view(["GET", "DELETE", "PUT", "PATCH"])
 @permission_classes([AllowAny])
 def post_view(request, post_id):
     if request.method == "DELETE":
@@ -207,8 +213,17 @@ def post_view(request, post_id):
             return Response(
                 {"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND
             )
-        serializer = PostSerializer(post)
-        return Response(serializer.data)
+        
+    if request.method in ["PUT", "PATCH"]:
+        post = Post.objects.get(id=post_id)
+        serializer = PostSerializer(post, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    serializer = PostSerializer(post)
+    return Response(serializer.data)
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])

@@ -49,8 +49,8 @@ function Post() {
           setFormData({
             titulo: res.data.titulo || '',
             texto: res.data.texto || '',
-            liga: res.data.liga || '',
-            clube: res.data.clube || '',
+            liga: res.data.liga?.id || res.data.liga || '',
+            clube: res.data.clube?.id || res.data.clube || '',
             imagem: res.data.imagem || '',
             username: res.data.autor || '',
             upvoteNumber: res.data.upvoteNumber || 0,
@@ -62,15 +62,18 @@ function Post() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    // Limpa o clube se mudar de liga
+
+    // Se mudar a liga, limpa o clube
     if (name === "liga") {
       setFormData(prev => ({
         ...prev,
+        liga: value,
         clube: ''
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
       }));
     }
   };
@@ -83,8 +86,8 @@ function Post() {
       const data = new FormData();
       data.append("titulo", formData.titulo);
       data.append("texto", formData.texto);
-      if (formData.liga) data.append("liga", formData.liga);
-      if (formData.clube) data.append("clube", formData.clube);
+      if (formData.liga) data.append("liga_id", Number(formData.liga));
+      if (formData.clube) data.append("clube_id", Number(formData.clube));
       if (!id) data.append("data", new Date().toISOString());
       if (formData.imagem && typeof formData.imagem !== "string") {
         data.append("imagem", formData.imagem);
@@ -92,9 +95,20 @@ function Post() {
 
 
       if (id) {
-        setIsEditing(false);
         await postService.update(id, data);
-        setPost({ ...post, ...formData });
+        const res = await postService.getById(id);
+        setPost(res.data);
+        setFormData({
+          titulo: res.data.titulo || '',
+          texto: res.data.texto || '',
+          liga: res.data.liga?.id || res.data.liga || '',
+          clube: res.data.clube?.id || res.data.clube || '',
+          imagem: res.data.imagem || '',
+          username: res.data.autor || '',
+          upvoteNumber: res.data.upvoteNumber || 0,
+        });
+        setPreviewUrl('');
+        setIsEditing(false);
       } else {
         await postService.create(data);
         navigate('/');
@@ -206,10 +220,7 @@ function Post() {
               onChange={e => {
                 const file = e.target.files[0];
                 if (file) {
-                  setFormData(prev => ({
-                    ...prev,
-                    imagem: file
-                  }));
+                  setFormData({ ...formData, imagem: file });
                   setPreviewUrl(URL.createObjectURL(file));
                 }
               }}
@@ -291,51 +302,53 @@ function Post() {
             {post.texto}
           </div>
 
-            <div className="post-upvote" style={{ margin: '32px 0 16px 0', textAlign: 'center' }}>
-              <button
-                onClick={() => {
-                  if (!user) {
-                    navigate('/login');
-                  } else {
-                    handleUpvote();
-                  }
-                }}
-                className="upvote-button"
-              >
-                ⬆️
-                <span style={{ marginLeft: 16, fontWeight: 'bold', fontSize: 20 }}>
-                  {post.upvoteNumber || 0}
-                </span>
-              </button>
-            </div>
-          
+          <div className="post-upvote" style={{ margin: '32px 0 16px 0', textAlign: 'center' }}>
+            <button
+              onClick={() => {
+                if (!user) {
+                  navigate('/login');
+                } else {
+                  handleUpvote();
+                }
+              }}
+              className="upvote-button"
+            >
+              ⬆️
+              <span style={{ marginLeft: 16, fontWeight: 'bold', fontSize: 20 }}>
+                {post.upvoteNumber || 0}
+              </span>
+            </button>
+          </div>
+
           <br />
-          {user && (post.autor === user.username || user.is_staff) && (
-            <div className="post-actions">
-              {post.autor === user.username && (
+          {user && (
+            (post.autor?.username === user.username || post.autor === user.username || user.is_staff) && (
+              <div className="post-actions">
+                {(post.autor?.username === user.username || post.autor === user.username) && (
+                  <button
+                    className="edit-button"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    Editar
+                  </button>
+                )}
                 <button
-                  className="edit-button"
-                  onClick={() => setIsEditing(true)}
-                >
-                  Editar
-                </button>
-              )}
-              <button
-                className="delete-button"
-                onClick={async () => {
-                  if (window.confirm("Tens a certeza que queres apagar este post?")) {
-                    try {
-                      await postService.delete(id);
-                      navigate('/');
-                    } catch (err) {
-                      alert("Erro ao apagar o post.");
+                  className="delete-button"
+                  onClick={async () => {
+                    if (window.confirm("Tens a certeza que queres apagar este post?")) {
+                      try {
+                        await postService.delete(id);
+                        navigate('/');
+                      } catch (err) {
+                        alert("Erro ao apagar o post.");
+                      }
                     }
-                  }
-                }}
-              >
-                Excluir
-              </button>
-            </div>
+                  }}
+                >
+                  Excluir
+                </button>
+              </div>
+            )
           )}
         </div>
       )
