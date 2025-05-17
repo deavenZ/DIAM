@@ -28,6 +28,7 @@ export const postService = {
   getById: (id) => api.get(`/posts/${id}/`),
   create: (data) => api.post('/posts/new/', data),
   update: (id, data) => api.put(`/posts/${id}/`, data),
+  upvote: (id) => api.post(`/posts/${id}/upvote/`),
   delete: (id) => api.delete(`/posts/${id}/`),
 };
 

@@ -155,14 +155,30 @@
   gap: 0.5rem;
 }
 
-.post-meta span::before {
+.post-meta .author-meta::before {
   content: "👤";
   font-size: 1rem;
 }
 
-.post-meta span:last-child::before {
+.upvote-badge {
+  display: inline-block;
+  background-color: var(--primary-green);
+  color:white;
+  border-radius: 7px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  padding: 2px 8px;
+  margin-left: 5px;
+  margin-top: 2px;
+  vertical-align: middle;
+  position: relative;
+  top: 1px;
+}
+
+.post-meta .data-meta::before {
   content: "📅";
 }
+
 
 @media (max-width: 768px) {
   .home-container {

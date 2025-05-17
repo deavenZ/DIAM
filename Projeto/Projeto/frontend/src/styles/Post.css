@@ -144,6 +144,32 @@
   gap: 1rem;
 }
 
+.upvote-button {
+  background-color: #28a745;
+  border: none;
+  border-radius: 24px;
+  color: white;
+  font-weight: bold;
+  font-size: 1.25rem;
+  padding: 10px 32px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: background 0.2s, transform 0.1s;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.upvote-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.upvote-button:hover:not(:disabled) {
+  background: #218838;
+  transform: translateY(-2px) scale(1.04);
+}
+
 .edit-button {
   background-color: #28a745;
   color: white;

@@ -45,6 +45,7 @@ class Post(models.Model):
     liga = models.ForeignKey(Liga, on_delete=models.SET_NULL, null=True, blank=True)
     clube = models.ForeignKey(Clube, on_delete=models.SET_NULL, null=True, blank=True)
     upvoteNumber = models.IntegerField(default=0)
+    upvoted_users = models.ManyToManyField(Utilizador, related_name="upvoted_posts", blank=True)
 
 
 class Comentarios(models.Model):

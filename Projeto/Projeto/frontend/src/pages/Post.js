@@ -16,6 +16,7 @@ function Post() {
     clube: '',
     imagem: '',
     username: '',
+    upvoteNumber: 0,
   });
 
   const [previewUrl, setPreviewUrl] = useState('');
@@ -52,6 +53,7 @@ function Post() {
             clube: res.data.clube || '',
             imagem: res.data.imagem || '',
             username: res.data.autor || '',
+            upvoteNumber: res.data.upvoteNumber || 0,
           });
         })
         .catch(() => navigate('/'));
@@ -101,6 +103,27 @@ function Post() {
       alert('Erro ao guardar o post.');
     }
   };
+
+  const handleUpvote = async () => {
+    try {
+      if (!user) {
+        alert('Precisas de estar logado para dar upvote.');
+      }
+      const res = await postService.upvote(id);
+      setPost(prev => ({
+        ...prev,
+        upvoteNumber: res.data.upvoteNumber
+      }));
+      setFormData(prev => ({
+        ...prev,
+        upvoteNumber: res.data.upvoteNumber
+      }));
+    } catch (err) {
+      alert('Erro ao dar upvote.');
+    }
+  };
+
+
 
   if (id && !post) {
     return <div>Loading...</div>;
@@ -267,6 +290,26 @@ function Post() {
           <div className="post-content">
             {post.texto}
           </div>
+
+            <div className="post-upvote" style={{ margin: '32px 0 16px 0', textAlign: 'center' }}>
+              <button
+                onClick={() => {
+                  if (!user) {
+                    navigate('/login');
+                  } else {
+                    handleUpvote();
+                  }
+                }}
+                className="upvote-button"
+              >
+                ⬆️
+                <span style={{ marginLeft: 16, fontWeight: 'bold', fontSize: 20 }}>
+                  {post.upvoteNumber || 0}
+                </span>
+              </button>
+            </div>
+          
+          <br />
           {user && (post.autor === user.username || user.is_staff) && (
             <div className="post-actions">
               {post.autor === user.username && (
@@ -295,8 +338,9 @@ function Post() {
             </div>
           )}
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
 

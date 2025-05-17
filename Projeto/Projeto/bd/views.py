@@ -210,6 +210,30 @@ def post_view(request, post_id):
         serializer = PostSerializer(post)
         return Response(serializer.data)
 
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def upvote_post(request, post_id):
+
+    try:
+        utilizador = Utilizador.objects.get(user=request.user)
+        post = Post.objects.get(id=post_id)
+    except (Utilizador.DoesNotExist, Post.DoesNotExist):
+        return Response({"error": "Post ou utilizador não encontrado."}, status=404)
+
+    # Se o utilizador já votou, remover upvote
+    if post.upvoted_users.filter(id=utilizador.id).exists():
+        post.upvoteNumber = max(0, post.upvoteNumber - 1)
+        post.upvoted_users.remove(utilizador)
+        post.save()
+        return Response({"upvoteNumber": post.upvoteNumber, "upvoted": False}, status=200)
+    # Caso contrário, adicionar upvote
+    else:
+        post.upvoteNumber += 1
+        post.upvoted_users.add(utilizador)
+        post.save()
+        return Response({"upvoteNumber": post.upvoteNumber, "upvoted": True}, status=200)
+    
+
 
 class LigaListView(generics.ListAPIView):
     queryset = Liga.objects.all()

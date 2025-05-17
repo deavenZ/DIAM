@@ -80,10 +80,13 @@ function Home() {
                 </h3>
                 <p>{post.texto}</p>
                 <div className="post-meta">
-                  <span>
+                  <span className='author-meta'>
                     Por: {post.autor && post.autor.username ? post.autor.username : (post.autor || 'Desconhecido')}
+                    <span className="upvote-badge" title="Upvotes" style={{ marginLeft: 8 }}>
+                      ⬆️ {post.upvoteNumber || 0}
+                    </span>
                   </span>
-                  <span>
+                  <span className='data-meta'>
                     Data: {post.data ? new Date(post.data).toLocaleDateString() : ''}
                   </span>
                 </div>
