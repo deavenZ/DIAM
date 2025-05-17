@@ -1,8 +1,7 @@
-// Homepage do site, onde vão estar os posts, e á esquerda as votações especificadas no pdf.
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { postService } from '../services/api';
 import '../styles/Home.css';
 
 function Home() {
@@ -11,18 +10,21 @@ function Home() {
   const [votes, setVotes] = useState([]);
 
   useEffect(() => {
-    // Buscar posts e votações da API somente se estiver logado
     fetchPosts();
     fetchVotes();
   }, []);
 
-  // Implementar de acordo com a API
   const fetchPosts = async () => {
-    // fetch / axios para obter posts
+    try {
+      const res = await postService.getAll();
+      setPosts(res.data);
+    } catch (err) {
+      console.error('Erro ao buscar posts:', err);
+    }
   };
 
   const fetchVotes = async () => {
-    // fetch / axios para obter votações
+    // Implementa depois para as votações
   };
 
   return (
@@ -38,14 +40,55 @@ function Home() {
         </div>
         <div className="posts-list">
           {posts.map((post) => (
-            <div key={post.id} className="post-card">
-              <h3>{post.title}</h3>
-              <p>{post.content}</p>
-              <div className="post-meta">
-                <span>Por: {post.author}</span>
-                <span>Data: {new Date(post.date).toLocaleDateString()}</span>
+            <Link
+              to={`/post/${post.id}`}
+              key={post.id}
+              className="post-card-link"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <div className="post-card">
+                <h3 className="post-title-row">
+                  <span>
+                    {post.titulo}
+                    {post.imagem && <span> &nbsp; 🖼️</span>}
+                  </span>
+                  {post.clube && post.clube.nome ? (
+                    <span className="club-league-info">
+                      {post.clube.emblema && (
+                        <img
+                          src={post.clube.emblema}
+                          alt={post.clube.nome}
+                          className="club-league-logo"
+                          onError={e => { e.target.style.display = 'none'; }}
+                        />
+                      )}
+                      {post.clube.nome}
+                    </span>
+                  ) : post.liga && post.liga.nome ? (
+                    <span className="club-league-info">
+                      {post.liga.logo && (
+                        <img
+                          src={post.liga.logo}
+                          alt={post.liga.nome}
+                          className="club-league-logo"
+                          onError={e => { e.target.style.display = 'none'; }}
+                        />
+                      )}
+                      {post.liga.nome}
+                    </span>
+                  ) : null}
+                </h3>
+                <p>{post.texto}</p>
+                <div className="post-meta">
+                  <span>
+                    Por: {post.autor && post.autor.username ? post.autor.username : (post.autor || 'Desconhecido')}
+                  </span>
+                  <span>
+                    Data: {post.data ? new Date(post.data).toLocaleDateString() : ''}
+                  </span>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -53,15 +96,7 @@ function Home() {
       <div className="voting-section">
         <h2>Votações Ativas</h2>
         <div className="votes-list">
-          {votes.map((vote) => (
-            <div key={vote.id} className="vote-card">
-              <h3>{vote.title}</h3>
-              <p>{vote.description}</p>
-              <div className="vote-options">
-                {/* Votações */}
-              </div>
-            </div>
-          ))}
+          {/* Implementa as votações aqui */}
         </div>
       </div>
     </div>

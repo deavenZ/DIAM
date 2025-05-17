@@ -31,12 +31,6 @@ class UtilizadorSerializer(serializers.ModelSerializer):
         ]
 
 
-class PostSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Post
-        fields = ["autor", "data", "titulo", "texto", "liga", "clube", "upvoteNumber", "imagem"]
-
-
 class ComentariosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comentarios
@@ -53,3 +47,27 @@ class LigaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Liga
         fields = ["id", "nome", "logo", "pais"]
+
+
+class PostSerializer(serializers.ModelSerializer):
+    autor = serializers.SerializerMethodField()
+    clube = ClubeSerializer(read_only=True)
+    liga = LigaSerializer(read_only=True)
+
+    class Meta:
+        model = Post
+        fields = [
+            "id",
+            "autor",
+            "data",
+            "titulo",
+            "texto",
+            "liga",
+            "clube",
+            "upvoteNumber",
+            "imagem",
+        ]
+
+    def get_autor(self, obj):
+        # Se o autor for um Utilizador customizado
+        return obj.autor.username if obj.autor else None

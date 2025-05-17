@@ -8,6 +8,8 @@ import Post from './pages/Post';
 import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import UsersList from './pages/UsersList';
+// import UserProfileAdmin from './pages/UserProfileAdmin';
 import './App.css';
 
 function App() {
@@ -24,6 +26,8 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/users" element={<UsersList />} />
+              {/* <Route path="/users/:id" element={<UserProfileAdmin />} /> */}
             </Routes>
           </main>
           <Footer />

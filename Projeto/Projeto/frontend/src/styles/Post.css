@@ -77,6 +77,42 @@
   background-color: #545b62;
 }
 
+.post-banner {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  background: #f3f6fa;
+  border-radius: 8px;
+  padding: 0.7rem 1.2rem;
+  margin-bottom: 1.2rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.banner-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.banner-logo {
+  height: 28px;
+  width: auto;
+}
+
+.banner-text {
+  color: #1a3a5d;
+}
+
+.post-banner-outside {
+  margin-left: 0;
+  margin-right: auto;
+  margin-bottom: 1.5rem;
+  max-width: 800px;
+  border-radius: 8px 8px 0 0;
+  box-shadow: none;
+}
+
 .post-view {
   background-color: white;
   padding: 2rem;
@@ -124,4 +160,4 @@
 
 .delete-button:hover {
   background-color: #c82333;
-} 
+}

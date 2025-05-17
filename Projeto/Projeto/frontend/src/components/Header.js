@@ -50,6 +50,7 @@ function Header() {
         <div className="nav-links">
           {user ? (
             <>
+              {user?.is_staff && <Link to="/users">Utilizadores</Link>}
               <Link to="/profile" className="profile-link">
                 <label className="username-label">{username}</label>
                 <img

@@ -4,9 +4,6 @@ const API_URL = 'http://localhost:8000/bd/api';
 
 const api = axios.create({
   baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 
@@ -29,7 +26,7 @@ api.interceptors.request.use((config) => {
 export const postService = {
   getAll: () => api.get('/posts/'),
   getById: (id) => api.get(`/posts/${id}/`),
-  create: (data) => api.post('/posts/', data),
+  create: (data) => api.post('/posts/new/', data),
   update: (id, data) => api.put(`/posts/${id}/`, data),
   delete: (id) => api.delete(`/posts/${id}/`),
 };
@@ -46,8 +43,12 @@ export const voteService = {
 
 // Serviços de Usuário
 export const userService = {
-  login: (credentials) => api.post('/auth/login/', credentials),
-  register: (userData) => api.post('/auth/register/', userData),
+  login: (credentials) => api.post('/auth/login/', credentials, {
+    headers: { 'Content-Type': 'application/json' }
+  }),
+  register: (userData) => api.post('/auth/register/', userData, {
+    headers: { 'Content-Type': 'application/json' }
+  }),
   getUser: () => api.get('/auth/user/'),
   getProfile: () => api.get('/profile/'),
   updateProfile: (data) => {
@@ -58,14 +59,16 @@ export const userService = {
       }
     }
     return api.put('/profile/', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'X-CSRFToken': getCSRFToken()
-      },
       withCredentials: true
     });
   },
-  changePassword: (data) => api.post('/change-password/', data),
+  changePassword: (data) => api.post('/change-password/', data, {
+    headers: { 'Content-Type': 'application/json' }
+  }),
+  getAllUsers: () => api.get('/users/'),
+  getUserById: (id) => api.get(`/users/${id}/`),
+  deleteUser: (id) => api.delete(`/users/${id}/`),
+  updateUser: (id, data) => api.put(`/users/${id}/`, data),
 };
 
 // Serviços de Ligas e Clubes

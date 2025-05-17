@@ -1,12 +1,17 @@
 from django.contrib.auth.models import User
 from .models import Utilizador
-from .serializers import UtilizadorSerializer, ClubeSerializer, LigaSerializer, PostSerializer
-from .models import Clube, Liga
+from .serializers import (
+    UtilizadorSerializer,
+    ClubeSerializer,
+    LigaSerializer,
+    PostSerializer,
+)
+from .models import Clube, Liga, Post
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAdminUser
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework import status, generics
 from django.utils import timezone
@@ -145,6 +150,15 @@ def change_password(request):
     user.save()
     return Response({"message": "Password alterada com sucesso!"})
 
+
+@api_view(["GET"])
+@permission_classes([IsAdminUser])
+def list_users(request):
+    users = Utilizador.objects.all()
+    serializer = UtilizadorSerializer(users, many=True)
+    return Response(serializer.data)
+
+
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 @parser_classes([MultiPartParser, FormParser])
@@ -154,26 +168,58 @@ def criar_post(request):
     try:
         utilizador = Utilizador.objects.get(user=user)
     except Utilizador.DoesNotExist:
-        return Response({"error": "Utilizador não encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Utilizador não encontrado."}, status=status.HTTP_404_NOT_FOUND
+        )
 
-    serializer = PostSerializer(utilizador.id, data=request.data, partial=True)
+    serializer = PostSerializer(data=request.data, partial=True)
 
     if serializer.is_valid():
-        serializer.save()
+        serializer.save(autor=utilizador, data=timezone.now())
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def clubes_por_liga(request, liga_id):
     clubes = Clube.objects.filter(liga_id=liga_id)
     serializer = ClubeSerializer(clubes, many=True)
     return Response(serializer.data)
 
 
+@api_view(["GET", "DELETE"])
+@permission_classes([AllowAny])
+def post_view(request, post_id):
+    if request.method == "DELETE":
+        try:
+            post = Post.objects.get(id=post_id)
+            post.delete()
+            return Response({"message": "Post deleted successfully"}, status=204)
+        except Post.DoesNotExist:
+            return Response(
+                {"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+    if request.method == "GET":
+        try:
+            post = Post.objects.get(id=post_id)
+        except Post.DoesNotExist:
+            return Response(
+                {"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = PostSerializer(post)
+        return Response(serializer.data)
+
+
 class LigaListView(generics.ListAPIView):
     queryset = Liga.objects.all()
     serializer_class = LigaSerializer
+    permission_classes = [AllowAny]
+
+
+class PostListView(generics.ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
     permission_classes = [AllowAny]
 
 

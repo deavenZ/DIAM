@@ -93,10 +93,15 @@
 }
 
 .post-card {
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  /* height: 180px;  <-- Remove esta linha */
+  padding: 1rem 1rem 0.2rem 1rem;
   border-bottom: 1px solid var(--border-color);
   transition: background-color 0.2s;
+  position: relative;
 }
+
 
 .post-card:hover {
   background-color: var(--background-gray);
@@ -108,15 +113,37 @@
   font-size: 1.1rem;
 }
 
+.post-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.club-league-info {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.club-league-logo {
+  height: 20px;
+  width: auto;
+}
+
 .post-card p {
-  margin: 0 0 1rem 0;
+  margin: 0;
+  /* Sem margem nenhuma */
   color: #444;
   line-height: 1.5;
   font-size: 0.95rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .post-meta {
   display: flex;
+  margin-top: 1.8rem;
+  /* Aumenta aqui para dar mais espaço */
   justify-content: space-between;
   color: #666;
   font-size: 0.85rem;
@@ -151,4 +178,4 @@
     position: static;
     margin-bottom: 1rem;
   }
-} 
+}

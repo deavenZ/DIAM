@@ -1,0 +1,56 @@
+.users-list-container {
+    max-width: 700px;
+    margin: 2rem auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px #0001;
+    padding: 2rem;
+}
+
+.users-list-container h2 {
+    margin-bottom: 1.5rem;
+    color: #1a3a5d;
+}
+
+.users-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.users-list li {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+.users-list li:last-child {
+    border-bottom: none;
+}
+
+.users-list a {
+    color: #1a3a5d;
+    font-weight: 500;
+    text-decoration: none;
+    margin-right: 1rem;
+}
+
+.users-list a:hover {
+    text-decoration: underline;
+}
+
+.users-list button {
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.3rem 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.users-list button:hover {
+    background: #c0392b;
+}

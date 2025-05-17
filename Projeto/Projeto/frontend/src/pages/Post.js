@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import { postService, leagueService, clubService } from '../services/api';
 import '../styles/Post.css';
 
@@ -14,12 +15,14 @@ function Post() {
     liga: '',
     clube: '',
     imagem: '',
+    username: '',
   });
 
   const [previewUrl, setPreviewUrl] = useState('');
   const [ligas, setLigas] = useState([]);
   const [clubesDaLiga, setClubesDaLiga] = useState([]);
 
+  const { user } = useAuth();
 
   useEffect(() => {
     leagueService.getAll().then(res => setLigas(res.data));
@@ -27,7 +30,10 @@ function Post() {
 
   useEffect(() => {
     if (formData.liga) {
-      clubService.getByLiga(formData.liga).then(res => setClubesDaLiga(res.data));
+      const ligaId = typeof formData.liga === 'object' ? formData.liga.id : formData.liga;
+      if (ligaId) {
+        clubService.getByLiga(ligaId).then(res => setClubesDaLiga(res.data));
+      }
     } else {
       setClubesDaLiga([]);
     }
@@ -35,6 +41,7 @@ function Post() {
 
   useEffect(() => {
     if (id) {
+      console.log("Post page loaded")
       postService.getById(id)
         .then(res => {
           setPost(res.data);
@@ -44,6 +51,7 @@ function Post() {
             liga: res.data.liga || '',
             clube: res.data.clube || '',
             imagem: res.data.imagem || '',
+            username: res.data.autor || '',
           });
         })
         .catch(() => navigate('/'));
@@ -67,7 +75,7 @@ function Post() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       console.log("Creating new post with data:", formData);
       const data = new FormData();
@@ -100,6 +108,44 @@ function Post() {
 
   return (
     <div className="post-container">
+      {!isEditing && id && post && (post.liga || post.clube) && (
+        <div className="post-banner post-banner-outside">
+          {post.liga && (
+            <span className="banner-item">
+              {post.liga.logo && (
+                <img
+                  src={
+                    post.liga.logo?.startsWith('http')
+                      ? post.liga.logo
+                      : `http://localhost:8000${post.liga.logo}`
+                  }
+                  alt={post.liga.nome}
+                  className="banner-logo"
+                  onError={e => { e.target.style.display = 'none'; }}
+                />
+              )}
+              <span className="banner-text">{post.liga.nome}</span>
+            </span>
+          )}
+          {post.clube && (
+            <span className="banner-item">
+              {post.clube.emblema && (
+                <img
+                  src={
+                    post.clube.emblema?.startsWith('http')
+                      ? post.clube.emblema
+                      : `http://localhost:8000${post.clube.emblema}`
+                  }
+                  alt={post.clube.nome}
+                  className="banner-logo"
+                  onError={e => { e.target.style.display = 'none'; }}
+                />
+              )}
+              <span className="banner-text">{post.clube.nome}</span>
+            </span>
+          )}
+        </div>
+      )}
       {isEditing || !id ? (
         <form onSubmit={handleSubmit} className="post-form">
           <h2>{id ? 'Editar Post' : 'Criar Novo Post'}</h2>
@@ -204,35 +250,50 @@ function Post() {
         <div className="post-view">
           <h2>{post.titulo}</h2>
           <div className="post-meta">
-            <span>Por: {post.autor}</span>
+            <span>Por: {post.autor || 'Desconhecido'}</span>
             <span>Data: {new Date(post.data).toLocaleDateString()}</span>
           </div>
+          {post.imagem && (
+            <img
+              src={"http://127.0.0.1:8000" + formData.imagem}
+              alt="imagem do post"
+              className="post-image"
+              height="250px"
+              width="auto"
+            />
+          )}
+          <br />
+          <br />
           <div className="post-content">
             {post.texto}
           </div>
-          <div className="post-actions">
-            <button
-              className="edit-button"
-              onClick={() => setIsEditing(true)}
-            >
-              Editar
-            </button>
-            <button
-              className="delete-button"
-              onClick={async () => {
-                if (window.confirm("Tens a certeza que queres apagar este post?")) {
-                  try {
-                    await postService.delete(id);
-                    navigate('/');
-                  } catch (err) {
-                    alert("Erro ao apagar o post.");
+          {user && (post.autor === user.username || user.is_staff) && (
+            <div className="post-actions">
+              {post.autor === user.username && (
+                <button
+                  className="edit-button"
+                  onClick={() => setIsEditing(true)}
+                >
+                  Editar
+                </button>
+              )}
+              <button
+                className="delete-button"
+                onClick={async () => {
+                  if (window.confirm("Tens a certeza que queres apagar este post?")) {
+                    try {
+                      await postService.delete(id);
+                      navigate('/');
+                    } catch (err) {
+                      alert("Erro ao apagar o post.");
+                    }
                   }
-                }
-              }}
-            >
-              Excluir
-            </button>
-          </div>
+                }}
+              >
+                Excluir
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

@@ -374,11 +374,23 @@ function Profile() {
               </div>
               <div className="info-group">
                 <label>Clube Favorito:</label>
-                <p>
+                <p style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                   {(() => {
                     const clubeObj = allClubes.find(c => c.id === profile.favClub);
-                    return clubeObj ? clubeObj.nome : 'Nenhum clube selecionado.';
-                  })()}
+                    return clubeObj ? (
+                      <>
+                        {clubeObj.emblema && (
+                          <img
+                            src={clubeObj.emblema}
+                            alt={clubeObj.nome}
+                            style={{ height: "24px", width: "auto", verticalAlign: "middle" }}
+                          />
+                        )}
+                        {clubeObj.nome}
+                      </>
+                    ) : 'Nenhum clube selecionado.'
+                  }
+                  )()}
                 </p>
               </div>
               <div className="info-group">
