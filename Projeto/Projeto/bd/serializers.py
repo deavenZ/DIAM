@@ -70,12 +70,11 @@ class PostSerializer(serializers.ModelSerializer):
             "texto",
             "liga",
             "clube",
-            "liga_id",   
-            "clube_id",  
+            "liga_id",   # write_only
+            "clube_id",  # write_only
             "upvoteNumber",
             "imagem",
         ]
 
     def get_autor(self, obj):
-        # Se o autor for um Utilizador customizado
         return obj.autor.username if obj.autor else None

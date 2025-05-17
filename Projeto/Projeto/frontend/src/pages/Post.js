@@ -13,7 +13,9 @@ function Post() {
     titulo: '',
     texto: '',
     liga: '',
+    lida_id: '',
     clube: '',
+    clube_id: '',
     imagem: '',
     username: '',
     upvoteNumber: 0,
@@ -50,7 +52,9 @@ function Post() {
             titulo: res.data.titulo || '',
             texto: res.data.texto || '',
             liga: res.data.liga?.id || res.data.liga || '',
+            liga_id: res.data.liga?.id || res.data.liga || '',
             clube: res.data.clube?.id || res.data.clube || '',
+            clube_id: res.data.clube?.id || res.data.clube || '',
             imagem: res.data.imagem || '',
             username: res.data.autor || '',
             upvoteNumber: res.data.upvoteNumber || 0,
@@ -63,12 +67,18 @@ function Post() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Se mudar a liga, limpa o clube
     if (name === "liga") {
       setFormData(prev => ({
         ...prev,
         liga: value,
-        clube: ''
+        liga_id: value,
+        clube: '',
+        clube_id: '',
+      }));
+    } else if (name === "clube") {
+      setFormData(prev => ({
+        ...prev,
+        clube: value // Só altera o clube
       }));
     } else {
       setFormData(prev => ({
@@ -86,8 +96,18 @@ function Post() {
       const data = new FormData();
       data.append("titulo", formData.titulo);
       data.append("texto", formData.texto);
-      if (formData.liga) data.append("liga_id", Number(formData.liga));
-      if (formData.clube) data.append("clube_id", Number(formData.clube));
+      if (formData.liga)  {
+        data.append("liga", Number(formData.liga));
+        data.append("liga_id", Number(formData.liga));
+      } else {
+        data.append("liga_id", "");
+      }
+      if (formData.clube) {
+        data.append("clube", Number(formData.clube));
+        data.append("clube_id", Number(formData.clube));
+      } else {
+        data.append("clube_id", "");
+      }
       if (!id) data.append("data", new Date().toISOString());
       if (formData.imagem && typeof formData.imagem !== "string") {
         data.append("imagem", formData.imagem);
@@ -102,13 +122,22 @@ function Post() {
           titulo: res.data.titulo || '',
           texto: res.data.texto || '',
           liga: res.data.liga?.id || res.data.liga || '',
+          liga_id: res.data.liga?.id || res.data.liga || '',
           clube: res.data.clube?.id || res.data.clube || '',
+          clube_id: res.data.clube?.id || res.data.clube || '',
           imagem: res.data.imagem || '',
           username: res.data.autor || '',
           upvoteNumber: res.data.upvoteNumber || 0,
         });
         setPreviewUrl('');
         setIsEditing(false);
+
+        if (!res.data.clube) {
+          setPost(prev => ({
+            ...prev,
+            clube: null
+          }));
+        }
       } else {
         await postService.create(data);
         navigate('/');
@@ -284,8 +313,8 @@ function Post() {
         <div className="post-view">
           <h2>{post.titulo}</h2>
           <div className="post-meta">
-            <span>Por: {post.autor || 'Desconhecido'}</span>
-            <span>Data: {new Date(post.data).toLocaleDateString()}</span>
+            <span className="author-meta"> Por: {post.autor || 'Desconhecido'}</span>
+            <span className="data-meta"> Data: {new Date(post.data).toLocaleDateString()}</span>
           </div>
           {post.imagem && (
             <img

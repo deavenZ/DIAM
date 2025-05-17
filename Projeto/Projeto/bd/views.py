@@ -171,12 +171,6 @@ def criar_post(request):
         return Response(
             {"error": "Utilizador não encontrado."}, status=status.HTTP_404_NOT_FOUND
         )
-
-    data = request.data.copy()
-    if not data.get("liga"):
-        data["liga"] = None
-    if not data.get("clube"):
-        data["clube"] = None
         
     serializer = PostSerializer(data=request.data, partial=True)
 
