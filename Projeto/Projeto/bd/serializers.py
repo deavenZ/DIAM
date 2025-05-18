@@ -102,8 +102,8 @@ class PostSerializer(serializers.ModelSerializer):
             "texto",
             "liga",
             "clube",
-            "liga_id",  # write_only
-            "clube_id",  # write_only
+            "liga_id",  
+            "clube_id",  
             "upvoteNumber",
             "imagem",
             "comentarios_count",

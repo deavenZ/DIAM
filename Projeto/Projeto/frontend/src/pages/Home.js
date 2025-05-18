@@ -13,13 +13,8 @@ function Home() {
   useEffect(() => {
     fetchPosts();
     fetchVotes();
-    if (user) {
-      const userType = user.userType;
-      if (userType === 1 || userType === 2) {
-        setIsAdmin(true);
-      } else {
-        setIsAdmin(false);
-      }
+    if (user && user.is_staff) {
+      setIsAdmin(true);
     } else {
       setIsAdmin(false);
     }

@@ -178,6 +178,18 @@ def change_password(request):
     return Response({"message": "Password alterada com sucesso!"})
 
 
+@api_view(["DELETE"])
+@permission_classes([IsAdminUser])
+def delete_user(request, username):
+    try:
+        user = Utilizador.objects.get(username=username)
+        user.user.delete() 
+        user.delete()
+        return Response({"message": "Utilizador apagado com sucesso."}, status=204)
+    except Utilizador.DoesNotExist:
+        return Response({"error": "Utilizador não encontrado."}, status=404)
+
+
 @api_view(["GET"])
 @permission_classes([IsAdminUser])
 def list_users(request):
@@ -325,6 +337,7 @@ def vote_list(request):
         votacoes = Votacao.objects.all().order_by("-id")
         serializer = VotacaoSerializer(votacoes, many=True)
         return Response(serializer.data)
+        
     if request.method == "POST":
         if not request.user.userType == 2:
             return Response(

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { voteService } from "../services/api";
 import { useAuth } from "../contexts/AuthContext";
+import "../styles/VoteCreate.css";
 
 function VoteCreate() {
     const { user } = useAuth();
@@ -10,7 +11,7 @@ function VoteCreate() {
     const [descricao, setDescricao] = useState("");
     const [opcoes, setOpcoes] = useState(["", ""]);
 
-    if (!user || user.userType !== 2) return <div>Não autorizado.</div>;
+    if (!user || !user.is_staff) return <div>Não autorizado.</div>;
 
     const handleChangeOpcao = (i, value) => {
         setOpcoes(opcoes.map((op, idx) => (idx === i ? value : op)));
@@ -21,12 +22,16 @@ function VoteCreate() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await voteService.create({
-            titulo,
-            descricao,
-            opcoes: opcoes.filter(Boolean),
-        });
-        navigate("/");
+        try {
+            await voteService.create({
+                titulo,
+                descricao,
+                opcoes: opcoes.filter(Boolean),
+            });
+            navigate("/");
+        } catch (err) {
+            alert(err.response?.data?.error || "Erro ao criar votação");
+        }
     };
 
     return (
@@ -35,7 +40,7 @@ function VoteCreate() {
             <form onSubmit={handleSubmit}>
                 <input value={titulo} onChange={e => setTitulo(e.target.value)} placeholder="Título" required />
                 <textarea value={descricao} onChange={e => setDescricao(e.target.value)} placeholder="Descrição" required />
-                <div>
+                <div className="opcoes-list">
                     <label>Opções:</label>
                     {opcoes.map((op, i) => (
                         <div key={i}>

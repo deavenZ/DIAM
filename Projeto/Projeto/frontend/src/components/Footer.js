@@ -25,7 +25,7 @@ function Footer() {
 
   return (
     <footer className={`app-footer${isAdmin ? ' admin-footer' : ''}`} onClick={() => setClicked(!clicked)}>
-      {clicked ? <p> Autores: João Antunes, Rafael Lopes. </p> : <p>&copy; 2025 Pontapé de Saída. Todos os direitos reservados.</p>}
+      {clicked ? <p> Autores: João Antunes nº 111139, Rafael Lopes nº 111110. </p> : <p>&copy; 2025 Pontapé de Saída. Todos os direitos reservados.</p>}
     </footer>
   );
 }

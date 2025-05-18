@@ -102,7 +102,6 @@
 .post-card {
   display: flex;
   flex-direction: column;
-  /* height: 180px;  <-- Remove esta linha */
   padding: 1rem 1rem 0.2rem 1rem;
   border-bottom: 1px solid var(--border-color);
   transition: background-color 0.2s;
@@ -139,7 +138,6 @@
 
 .post-card p {
   margin: 0;
-  /* Sem margem nenhuma */
   color: #444;
   line-height: 1.5;
   font-size: 0.95rem;

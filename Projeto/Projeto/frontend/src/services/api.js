@@ -72,9 +72,9 @@ export const userService = {
     headers: { 'Content-Type': 'application/json' }
   }),
   getAllUsers: () => api.get('/users/'),
-  getUserById: (id) => api.get(`/users/${id}/`),
-  deleteUser: (id) => api.delete(`/users/${id}/`),
-  updateUser: (id, data) => api.put(`/users/${id}/`, data),
+  getUserById: (username) => api.get(`/users/${username}/`),
+  deleteUser: (username) => api.delete(`/users/${username}/`),
+  updateUser: (username, data) => api.put(`/users/${username}/`, data),
 };
 
 // Serviços de Ligas e Clubes

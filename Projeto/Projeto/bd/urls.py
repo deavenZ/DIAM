@@ -20,6 +20,7 @@ urlpatterns = [
     path("api/votes/<int:post_id>/", views.vote_view),
     path("api/votes/<int:post_id>/upvote/", views.submit_vote),
     path("api/users/", views.list_users),
+    path("api/users/<str:username>/", views.delete_user),
     path("api/token/", obtain_auth_token),
     path("api/change-password/", views.change_password),
     path("api/ligas/<int:liga_id>/clubes/", views.clubes_por_liga),
