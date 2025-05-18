@@ -10,7 +10,7 @@ function Login() {
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -37,6 +37,11 @@ function Login() {
       setIsLoading(false);
     }
   };
+
+  if (user) {
+    navigate('/');
+  }
+
 
   return (
     <div className="login-container">

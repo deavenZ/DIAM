@@ -1,7 +1,7 @@
 .vote-create-container {
   max-width: 480px;
   margin: 48px auto;
-  background: #f7faf7; 
+  background: #f7faf7;
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   padding: 40px 32px 32px 32px;
@@ -51,7 +51,7 @@
   margin-bottom: 8px;
 }
 
-.vote-create-container .opcoes-list {
+.opcoes-list {
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -59,7 +59,7 @@
   align-items: center;
 }
 
-.vote-create-container .opcoes-list > div {
+.opcoes-list>div {
   display: flex;
   align-items: center;
   gap: 10px;

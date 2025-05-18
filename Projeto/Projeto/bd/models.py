@@ -45,7 +45,9 @@ class Post(models.Model):
     liga = models.ForeignKey(Liga, on_delete=models.SET_NULL, null=True, blank=True)
     clube = models.ForeignKey(Clube, on_delete=models.SET_NULL, null=True, blank=True)
     upvoteNumber = models.IntegerField(default=0)
-    upvoted_users = models.ManyToManyField(Utilizador, related_name="upvoted_posts", blank=True)
+    upvoted_users = models.ManyToManyField(
+        Utilizador, related_name="upvoted_posts", blank=True
+    )
 
 
 class Comentarios(models.Model):
@@ -59,6 +61,9 @@ class Comentarios(models.Model):
 class Votacao(models.Model):
     votacao_texto = models.CharField(max_length=100)
     data_pub = models.DateTimeField("data de publicação")
+    votantes = models.ManyToManyField(
+        related_name="votacoes", to=Utilizador, blank=True
+    )
 
 
 class Opcao(models.Model):

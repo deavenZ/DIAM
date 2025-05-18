@@ -16,12 +16,11 @@ function UsersList() {
         });
     });
 
-    const handleDelete = async (username) => {
-        console.log("Apagar utilizador com user:", username);
+    const handleDelete = async (id) => {
         if (window.confirm("Tens a certeza que queres apagar este utilizador?")) {
             try {
-                await userService.deleteUser(username);
-                setUsers(users.filter(user => user.username !== username));
+                await userService.deleteUser(id);
+                setUsers(users.filter(user => user.id !== id));
             } catch (err) {
                 alert("Erro ao apagar utilizador.");
             }
@@ -47,7 +46,18 @@ function UsersList() {
                             </td>
                             <td>{user.email}</td>
                             <td>
-                                <button onClick={() => handleDelete(user.username)} className="delete-btn">Apagar</button>
+                                {(user.userType !== 1 && user.userType !== 2) ? (
+                                    <button
+                                        onClick={() => handleDelete(user.id)}
+                                        className="delete-btn"
+                                    >
+                                        Apagar
+                                    </button>
+                                ) : (
+                                    <span style={{ color: "#888", fontStyle: "italic" }}>
+                                        Não permitido
+                                    </span>
+                                )}
                             </td>
                         </tr>
                     ))}

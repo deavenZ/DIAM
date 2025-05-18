@@ -12,7 +12,7 @@ function Register() {
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { register, login } = useAuth();
+  const { register, login, user } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -67,6 +67,10 @@ function Register() {
       setIsLoading(false);
     }
   };
+
+  if (user) {
+    navigate('/');
+  }
 
   return (
     <div className="register-container">

@@ -42,7 +42,8 @@ export const voteService = {
   create: (data) => api.post('/votes/', data),
   update: (id, data) => api.put(`/votes/${id}/`, data),
   delete: (id) => api.delete(`/votes/${id}/`),
-  submitVote: (id, optionId) => api.post(`/votes/${id}/submit/`, { optionId }),
+  getOptions: (id) => api.get(`/votes/${id}/options/`),
+  submitVote: (id, optionId) => api.patch(`/votes/${id}/options/${optionId}/`),
 };
 
 // Serviços de Usuário

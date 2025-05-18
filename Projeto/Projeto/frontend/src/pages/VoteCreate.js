@@ -8,7 +8,6 @@ function VoteCreate() {
     const { user } = useAuth();
     const navigate = useNavigate();
     const [titulo, setTitulo] = useState("");
-    const [descricao, setDescricao] = useState("");
     const [opcoes, setOpcoes] = useState(["", ""]);
 
     if (!user || !user.is_staff) return <div>Não autorizado.</div>;
@@ -25,7 +24,6 @@ function VoteCreate() {
         try {
             await voteService.create({
                 titulo,
-                descricao,
                 opcoes: opcoes.filter(Boolean),
             });
             navigate("/");
@@ -39,7 +37,6 @@ function VoteCreate() {
             <h2>Criar Nova Votação</h2>
             <form onSubmit={handleSubmit}>
                 <input value={titulo} onChange={e => setTitulo(e.target.value)} placeholder="Título" required />
-                <textarea value={descricao} onChange={e => setDescricao(e.target.value)} placeholder="Descrição" required />
                 <div className="opcoes-list">
                     <label>Opções:</label>
                     {opcoes.map((op, i) => (

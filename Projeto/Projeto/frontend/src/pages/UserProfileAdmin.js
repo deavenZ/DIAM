@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { userService, clubService } from "../services/api";
 import '../styles/UserProfileAdmin.css';
 
 function UserProfileAdmin() {
+    const { user } = useAuth();
     const { username } = useParams();
     const [profile, setProfile] = useState(null);
     const [allClubes, setAllClubes] = useState([]);
+    const [isSuperior, setIsSuperior] = useState(false);
 
     const navigate = useNavigate();
 
@@ -30,9 +33,22 @@ function UserProfileAdmin() {
                     }
                 }
                 setProfile({ ...res.data, favClubName, favClubEmblema });
+                
+                console.log("User object completo:", user);
+                console.log("É superuser? ", user?.is_superuser);
+                console.log("É staff ?", user?.is_staff);
+                console.log("Tipo do is_superuser:", typeof user?.is_superuser);
+                
+                if (user?.is_superuser) {
+                    setIsSuperior(true);
+                } else if (user?.is_staff && res.data.userType === 0) {
+                    setIsSuperior(true);
+                } else {
+                    setIsSuperior(false);
+                }
             })
             .catch(err => console.error(err));
-    }, [username, allClubes]);
+    }, [username, allClubes, user]);
 
     if (!profile) {
         return <div style={{ padding: "2rem" }}>A carregar utilizador...</div>;
@@ -44,7 +60,9 @@ function UserProfileAdmin() {
                 <div className="welcome-text">
                     <h1>
                         User: {profile.username}
-                        <Link to={`/users/${profile.username}/edit`} className="edit-link">Editar Perfil</Link>
+                        {user && isSuperior && (
+                            <Link to={`/users/${profile.username}/edit`} className="edit-link">Editar Perfil</Link>
+                        )}
                     </h1>
                 </div>
                 <div className="profile-info-horizontal">

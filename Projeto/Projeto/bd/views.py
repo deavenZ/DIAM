@@ -7,6 +7,7 @@ from .serializers import (
     PostSerializer,
     ComentariosSerializer,
     VotacaoSerializer,
+    OpcaoSerializer,
 )
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view, permission_classes, parser_classes
@@ -83,6 +84,7 @@ def login_view(request):
                     "username": user.username,
                     "email": user.email,
                     "is_staff": user.is_staff,
+                    "is_superuser": user.is_superuser,
                 },
             }
         )
@@ -108,6 +110,7 @@ def user_view(request):
             "username": request.user.username,
             "email": request.user.email,
             "is_staff": request.user.is_staff,
+            "is_superuser": request.user.is_superuser,
         }
     )
 
@@ -183,7 +186,17 @@ def change_password(request):
 def delete_user(request, username):
     try:
         user = Utilizador.objects.get(username=username)
-        user.user.delete() 
+        if user.userType in [1, 2]:
+            if not (
+                request.user.is_superuser or getattr(request.user, "userType", 0) == 2
+            ):
+                return Response(
+                    {
+                        "error": "Não tens permissão para apagar moderadores ou administradores."
+                    },
+                    status=403,
+                )
+        user.user.delete()
         user.delete()
         return Response({"message": "Utilizador apagado com sucesso."}, status=204)
     except Utilizador.DoesNotExist:
@@ -331,31 +344,33 @@ def comentarios_post(request, post_id):
 
 
 @api_view(["GET", "POST"])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def vote_list(request):
     if request.method == "GET":
         votacoes = Votacao.objects.all().order_by("-id")
         serializer = VotacaoSerializer(votacoes, many=True)
         return Response(serializer.data)
-        
+
     if request.method == "POST":
-        if not request.user.userType == 2:
+        if not request.user.is_staff:
             return Response(
                 {"error": "Apenas admins podem criar votações."}, status=403
             )
-        data = request.data
+        data = request.data.copy()
         opcoes = data.pop("opcoes", [])
+        data["votacao_texto"] = data.pop("titulo", "")
+        data["data_pub"] = timezone.now()
         serializer = VotacaoSerializer(data=data)
         if serializer.is_valid():
             votacao = serializer.save()
             for texto in opcoes:
-                Opcao.objects.create(votacao=votacao, texto=texto)
+                Opcao.objects.create(questao=votacao, opcao_texto=texto)
             return Response(VotacaoSerializer(votacao).data, status=201)
         return Response(serializer.errors, status=400)
 
 
 @api_view(["GET"])
-@permission_classes([IsAuthenticated])
+@permission_classes([AllowAny])
 def vote_view(request, post_id):
     try:
         votacao = Votacao.objects.get(id=post_id)
@@ -365,22 +380,71 @@ def vote_view(request, post_id):
     return Response(serializer.data)
 
 
-@api_view(["POST"])
-@permission_classes([IsAuthenticated])
-def submit_vote(request, post_id):
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def list_vote_options(request, post_id):
+    """
+    Lista todas as opções de uma votação
+    """
     try:
         votacao = Votacao.objects.get(id=post_id)
+        opcoes = Opcao.objects.filter(questao=votacao)
     except Votacao.DoesNotExist:
         return Response({"error": "Votação não encontrada."}, status=404)
-    opcao_id = request.data.get("optionId")
-    try:
-        opcao = votacao.opcao_set.get(id=opcao_id)
     except Opcao.DoesNotExist:
-        return Response({"error": "Opção inválida."}, status=400)
-    # Aqui podes guardar o voto do utilizador (ex: ManyToMany, ou só incrementar)
-    opcao.votos += 1
-    opcao.save()
-    return Response({"success": True})
+        return Response({"error": "Opção não encontrada."}, status=404)
+    serializer = OpcaoSerializer(opcoes, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["PATCH"])
+@permission_classes([IsAuthenticated])
+def vote_option(request, post_id, option_id):
+    """
+    Registra um voto em uma opção específica
+    """
+    print(f"Recebendo voto para votação {post_id}, opção {option_id}")
+    print(f"Usuário autenticado: {request.user.username}")
+    
+    try:
+        votacao = Votacao.objects.get(id=post_id)
+        print(f"Votação encontrada: {votacao.votacao_texto}")
+    except Votacao.DoesNotExist:
+        print(f"Votação {post_id} não encontrada")
+        return Response({"error": "Votação não encontrada."}, status=404)
+
+    try:
+        utilizador = Utilizador.objects.get(user=request.user)
+        print(f"Utilizador encontrado: {utilizador.username}")
+    except Utilizador.DoesNotExist:
+        print(f"Utilizador não encontrado para {request.user.username}")
+        return Response({"error": "Utilizador não encontrado."}, status=404)
+
+    if votacao.votantes.filter(id=utilizador.id).exists():
+        print(f"Usuário {utilizador.username} já votou nesta votação")
+        return Response({"error": "Já votaste nesta votação."}, status=400)
+
+    try:
+        opcao = Opcao.objects.get(id=option_id, questao=votacao)
+        print(f"Opção encontrada: {opcao.opcao_texto}")
+    except Opcao.DoesNotExist:
+        print(f"Opção {option_id} não encontrada para votação {post_id}")
+        return Response({"error": "Opção não encontrada."}, status=404)
+
+    try:
+        opcao.votos += 1
+        opcao.save()
+        votacao.votantes.add(utilizador)
+        votacao.save()
+        print(f"Voto registrado com sucesso para opção {opcao.opcao_texto}")
+        
+        # Retornar todas as opções atualizadas
+        opcoes = Opcao.objects.filter(questao=votacao)
+        serializer = OpcaoSerializer(opcoes, many=True)
+        return Response(serializer.data, status=200)
+    except Exception as e:
+        print(f"Erro ao salvar voto: {str(e)}")
+        return Response({"error": "Erro ao processar voto."}, status=500)
 
 
 class LigaListView(generics.ListAPIView):

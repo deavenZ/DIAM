@@ -5,15 +5,18 @@ from .models import Post, Comentarios, Votacao, Opcao, Clube, Liga, Utilizador
 class OpcaoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Opcao
-        fields = ["questao", "opcao_texto", "votos"]
+        fields = ["id", "questao", "opcao_texto", "votos"]
 
 
 class VotacaoSerializer(serializers.ModelSerializer):
-    votacao_set = OpcaoSerializer(many=True, read_only=True)
+    votantes = serializers.SerializerMethodField()
+
+    def get_votantes(self, obj):
+        return [v.username for v in obj.votantes.all()]
 
     class Meta:
         model = Votacao
-        fields = ["votacao_texto", "data_pub", "votacao_set"]
+        fields = ["id", "votacao_texto", "data_pub", "votantes"]
 
 
 class UtilizadorSerializer(serializers.ModelSerializer):
@@ -102,8 +105,8 @@ class PostSerializer(serializers.ModelSerializer):
             "texto",
             "liga",
             "clube",
-            "liga_id",  
-            "clube_id",  
+            "liga_id",
+            "clube_id",
             "upvoteNumber",
             "imagem",
             "comentarios_count",

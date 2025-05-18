@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { postService } from '../services/api';
+import { postService, voteService } from '../services/api';
 import '../styles/Home.css';
 
 function Home() {
@@ -30,7 +30,13 @@ function Home() {
   };
 
   const fetchVotes = async () => {
-    // Implementa depois para as votações
+    try {
+      const res = await voteService.getAll();
+      console.log('Votações:', res.data);
+      setVotes(res.data);
+    } catch (err) {
+      console.error('Erro ao buscar votações:', err);
+    }
   };
 
   return (
@@ -118,8 +124,7 @@ function Home() {
           {votes.map((vote) => (
             <Link to={`/votes/${vote.id}`} key={vote.id} className="vote-card-link">
               <div className="vote-card">
-                <h3>{vote.titulo}</h3>
-                <p>{vote.descricao}</p>
+                <h3>{vote.votacao_texto}</h3>
               </div>
             </Link>
           ))}
