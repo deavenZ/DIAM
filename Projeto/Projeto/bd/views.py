@@ -1,12 +1,12 @@
 from django.contrib.auth.models import User
-from .models import Utilizador
+from .models import Utilizador, Clube, Liga, Post, Comentarios
 from .serializers import (
     UtilizadorSerializer,
     ClubeSerializer,
     LigaSerializer,
     PostSerializer,
+    ComentariosSerializer
 )
-from .models import Clube, Liga, Post
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.response import Response
@@ -243,6 +243,46 @@ def upvote_post(request, post_id):
         return Response({"upvoteNumber": post.upvoteNumber, "upvoted": True}, status=200)
     
 
+@api_view(["GET", "POST", "DELETE"])
+@permission_classes([AllowAny])  
+def comentarios_post(request, post_id):
+
+    if request.method == "GET":
+        comentarios = Comentarios.objects.filter(post_id=post_id).order_by('-data')
+        serializer = ComentariosSerializer(comentarios, many=True)
+        return Response(serializer.data)
+    
+    elif request.method == "POST":
+        if not request.user.is_authenticated:
+            return Response({"error": "Precisas de estar autenticado."}, status=401)
+        data = request.data.copy()
+        data["post"] = post_id
+       
+        try:
+            utilizador = Utilizador.objects.get(user=request.user)
+            data["autor"] = utilizador.id
+        except Utilizador.DoesNotExist:
+            return Response({"error": "Utilizador não encontrado."}, status=400)
+        data["data"] = timezone.now()
+        serializer = ComentariosSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
+    
+    elif request.method == "DELETE":
+        comentario_id = request.data.get("comentario_id")
+        if not comentario_id:
+            return Response({"error": "ID do comentário não fornecido."}, status=400)
+        try:
+            comentario = Comentarios.objects.get(id=comentario_id, post_id=post_id)
+        except Comentarios.DoesNotExist:
+            return Response({"error": "Comentário não encontrado."}, status=404)
+        
+        if request.user.is_authenticated and (request.user.is_staff or comentario.autor.user == request.user):
+            comentario.delete()
+            return Response({"success": "Comentário apagado."}, status=204)
+    
 
 class LigaListView(generics.ListAPIView):
     queryset = Liga.objects.all()

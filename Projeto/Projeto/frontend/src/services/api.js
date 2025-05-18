@@ -30,6 +30,9 @@ export const postService = {
   update: (id, data) => api.put(`/posts/${id}/`, data),
   upvote: (id) => api.post(`/posts/${id}/upvote/`),
   delete: (id) => api.delete(`/posts/${id}/`),
+  getComentarios: (postId) => api.get(`/posts/${postId}/comentarios/`),
+  addComentario: (postId, data) => api.post(`/posts/${postId}/comentarios/`, data),
+  deleteComentario: (postId, comentarioId) => api.delete(`/posts/${postId}/comentarios/`, { data: { comentario_id: comentarioId } }),
 };
 
 // Serviços de Votações

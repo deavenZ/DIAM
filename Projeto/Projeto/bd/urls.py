@@ -15,6 +15,7 @@ urlpatterns = [
     path("api/posts/<int:post_id>/", views.post_view),
     # path("api/posts/<int:post_id>/comments/", views.ComentariosListView.as_view()),
     path('api/posts/<int:post_id>/upvote/', views.upvote_post),
+    path('api/posts/<int:post_id>/comentarios/', views.comentarios_post),
     path("api/users/", views.list_users),
     path("api/token/", obtain_auth_token),
     path("api/change-password/", views.change_password),

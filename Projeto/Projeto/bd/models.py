@@ -40,7 +40,7 @@ class Post(models.Model):
     autor = models.ForeignKey(Utilizador, on_delete=models.CASCADE)
     data = models.DateTimeField("data de publicação")
     titulo = models.CharField(max_length=100, default="Título")
-    texto = models.TextField(max_length=2000, null=True, blank=True)
+    texto = models.TextField(max_length=3000, null=True, blank=True)
     imagem = models.ImageField(upload_to="posts", null=True, blank=True)
     liga = models.ForeignKey(Liga, on_delete=models.SET_NULL, null=True, blank=True)
     clube = models.ForeignKey(Clube, on_delete=models.SET_NULL, null=True, blank=True)
@@ -51,7 +51,7 @@ class Post(models.Model):
 class Comentarios(models.Model):
     autor = models.ForeignKey(Utilizador, on_delete=models.CASCADE)
     data = models.DateTimeField("data de publicação")
-    texto = models.TextField("comentário")
+    texto = models.TextField(max_length=1000, null=True, blank=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     likenumber = models.IntegerField(default=0)
 

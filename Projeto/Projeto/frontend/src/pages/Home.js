@@ -82,8 +82,11 @@ function Home() {
                 <div className="post-meta">
                   <span className='author-meta'>
                     Por: {post.autor && post.autor.username ? post.autor.username : (post.autor || 'Desconhecido')}
-                    <span className="upvote-badge" title="Upvotes" style={{ marginLeft: 8 }}>
-                      ⬆️ {post.upvoteNumber || 0}
+                    <span className="upvote-badge">
+                      ⬆️ {post.upvoteNumber}
+                    </span>
+                    <span className="comentarios-count-badge">
+                      💬 {post.comentarios_count}
                     </span>
                   </span>
                   <span className='data-meta'>

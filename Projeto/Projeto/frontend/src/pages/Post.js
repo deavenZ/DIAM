@@ -24,6 +24,10 @@ function Post() {
   const [previewUrl, setPreviewUrl] = useState('');
   const [ligas, setLigas] = useState([]);
   const [clubesDaLiga, setClubesDaLiga] = useState([]);
+  const [comentarios, setComentarios] = useState([]);
+  const [novoComentario, setNovoComentario] = useState('');
+  const [comentarioErro, setComentarioErro] = useState('');
+  const [forceUpdate, setForceUpdate] = useState(false);
 
   const { user } = useAuth();
 
@@ -96,7 +100,7 @@ function Post() {
       const data = new FormData();
       data.append("titulo", formData.titulo);
       data.append("texto", formData.texto);
-      if (formData.liga)  {
+      if (formData.liga) {
         data.append("liga", Number(formData.liga));
         data.append("liga_id", Number(formData.liga));
       } else {
@@ -147,26 +151,90 @@ function Post() {
     }
   };
 
+  const isUpvoted = () => {
+    const upvotedPosts = JSON.parse(localStorage.getItem('upvotedPosts') || '[]');
+    return upvotedPosts.includes(Number(id));
+  };
+
   const handleUpvote = async () => {
+    if (!user) {
+      navigate('/login'); // Redireciona para login
+      return;
+    }
     try {
-      if (!user) {
-        alert('Precisas de estar logado para dar upvote.');
-      }
       const res = await postService.upvote(id);
       setPost(prev => ({
         ...prev,
-        upvoteNumber: res.data.upvoteNumber
+        upvoteNumber: res.data.upvoteNumber,
       }));
-      setFormData(prev => ({
-        ...prev,
-        upvoteNumber: res.data.upvoteNumber
-      }));
+
+      let upvotedPosts = JSON.parse(localStorage.getItem('upvotedPosts') || '[]');
+      if (res.data.upvoted) {
+        if (!upvotedPosts.includes(Number(id))) upvotedPosts.push(Number(id));
+      } else {
+        upvotedPosts = upvotedPosts.filter(pid => pid !== Number(id));
+      }
+      localStorage.setItem('upvotedPosts', JSON.stringify(upvotedPosts));
+      setForceUpdate(f => !f);
     } catch (err) {
       alert('Erro ao dar upvote.');
     }
   };
 
+  const fetchComentarios = async () => {
+    const res = await postService.getComentarios(id);
+    setComentarios(res.data);
+  };
 
+  useEffect(() => {
+    if (id) fetchComentarios();
+  }, [id]);
+
+  const handleComentarioSubmit = async (e) => {
+    e.preventDefault();
+    setComentarioErro('');
+
+    if (!novoComentario.trim()) {
+      setComentarioErro('O comentário não pode estar vazio.');
+      return;
+    }
+
+    if (novoComentario.length > 1000) {
+      setComentarioErro('O comentário não pode conter mais de 1000 caracteres.');
+      return;
+    }
+
+    const form = new FormData();
+    form.append('texto', novoComentario);
+
+    try {
+      const res = await postService.addComentario(id, form);
+      if (res.status === 201) {
+        setNovoComentario('');
+        setComentarioErro('');
+        fetchComentarios();
+      } else {
+        setComentarioErro('Erro ao enviar comentário');
+      }
+    } catch (err) {
+      if (err.response && err.response.data && err.response.data.texto) {
+        setComentarioErro(err.response.data.texto.join(' '));
+      } else {
+        setComentarioErro('Erro ao enviar comentário');
+      }
+    }
+  };
+
+  const handleDeleteComentario = async (comentarioId) => {
+    if (window.confirm("Tens a certeza que queres apagar este comentário?")) {
+      try {
+        await postService.deleteComentario(id, comentarioId);
+        fetchComentarios();
+      } catch (err) {
+        setComentarioErro('Erro ao apagar comentário');
+      }
+    }
+  };
 
   if (id && !post) {
     return <div>Loading...</div>;
@@ -294,7 +362,7 @@ function Post() {
               ))}
             </select>
           </div>
-          <div className="form-actions">
+          <div className="form-actions form-actions-bottom-left">
             <button type="submit" className="submit-button">
               {id ? 'Atualizar' : 'Publicar'}
             </button>
@@ -333,14 +401,8 @@ function Post() {
 
           <div className="post-upvote" style={{ margin: '32px 0 16px 0', textAlign: 'center' }}>
             <button
-              onClick={() => {
-                if (!user) {
-                  navigate('/login');
-                } else {
-                  handleUpvote();
-                }
-              }}
-              className="upvote-button"
+              onClick={handleUpvote}
+              className={`upvote-button${user && isUpvoted() ? ' upvoted' : ''}`}
             >
               ⬆️
               <span style={{ marginLeft: 16, fontWeight: 'bold', fontSize: 20 }}>
@@ -358,7 +420,7 @@ function Post() {
                     className="edit-button"
                     onClick={() => setIsEditing(true)}
                   >
-                    Editar
+                    Editar Post
                   </button>
                 )}
                 <button
@@ -374,14 +436,56 @@ function Post() {
                     }
                   }}
                 >
-                  Excluir
+                  Excluir Post
                 </button>
               </div>
             )
           )}
         </div>
-      )
-      }
+      )} <div className="comentarios-section">
+        {user && (
+          <form onSubmit={handleComentarioSubmit} className="comentario-form">
+            <textarea
+              value={novoComentario}
+              onChange={e => setNovoComentario(e.target.value)}
+              placeholder="Escreve o teu comentário..."
+              rows={3}
+            />
+            {comentarioErro && (
+              <div className="comentario-erro">{comentarioErro}</div>
+            )}
+            <button type="submit">Comentar</button>
+          </form>
+        )}
+        <ul className="comentarios-list">
+          {comentarios.map(com => (
+            <li key={com.id}>
+              <span className="comentario-avatar-stack">
+                {com.autor_avatar && (
+                  <img
+                    src={`http://localhost:8000${com.autor_avatar}`}
+                    alt="avatar"
+                  />
+                )}
+              </span>
+              <span className="comentario-username">{com.autor_username}</span>
+              <span className="comentario-texto">{com.texto}</span>
+              {(user?.username === com.autor_username || user?.is_staff) && (
+                <button
+                  className="comentario-delete-button"
+                  onClick={() => handleDeleteComentario(com.id)}
+                >
+                  Excluir
+                </button>
+              )}
+            </li>
+          ))}
+          {comentarios.length === 0 && (
+            <li className="sem-comentarios">Sem comentários ainda!</li>
+          )}
+        </ul>
+      </div>
+
     </div >
   );
 }
