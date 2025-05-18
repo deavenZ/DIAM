@@ -33,6 +33,13 @@
   border-bottom: 2px solid var(--border-color);
 }
 
+.votes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+
 .votes-list {
   display: flex;
   flex-direction: column;
@@ -162,7 +169,7 @@
 .upvote-badge {
   display: inline-block;
   background-color: var(--primary-green);
-  color:white;
+  color: white;
   border-radius: 7px;
   font-size: 0.7rem;
   font-weight: bold;

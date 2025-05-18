@@ -1,11 +1,12 @@
 from django.contrib.auth.models import User
-from .models import Utilizador, Clube, Liga, Post, Comentarios
+from .models import Utilizador, Clube, Liga, Post, Comentarios, Votacao, Opcao
 from .serializers import (
     UtilizadorSerializer,
     ClubeSerializer,
     LigaSerializer,
     PostSerializer,
-    ComentariosSerializer
+    ComentariosSerializer,
+    VotacaoSerializer,
 )
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.decorators import api_view, permission_classes, parser_classes
@@ -134,6 +135,32 @@ def profile_view(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(["GET", "PUT"])
+@permission_classes([IsAuthenticated])
+def user_profile_view(request, username):
+    if request.method == "PUT":
+        try:
+            profile = Utilizador.objects.get(username=username)
+        except Utilizador.DoesNotExist:
+            return Response(
+                {"error": "Profile not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+        serializer = UtilizadorSerializer(profile, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == "GET":
+        try:
+            profile = Utilizador.objects.get(username=username)
+        except Utilizador.DoesNotExist:
+            return Response(
+                {"error": "Profile not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+    serializer = UtilizadorSerializer(profile)
+    return Response(serializer.data)
+
+
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def change_password(request):
@@ -171,7 +198,7 @@ def criar_post(request):
         return Response(
             {"error": "Utilizador não encontrado."}, status=status.HTTP_404_NOT_FOUND
         )
-        
+
     serializer = PostSerializer(data=request.data, partial=True)
 
     if serializer.is_valid():
@@ -207,8 +234,7 @@ def post_view(request, post_id):
             return Response(
                 {"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND
             )
-        
-        
+
     if request.method in ["PUT", "PATCH"]:
         post = Post.objects.get(id=post_id)
         serializer = PostSerializer(post, data=request.data, partial=True)
@@ -216,9 +242,10 @@ def post_view(request, post_id):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     serializer = PostSerializer(post)
     return Response(serializer.data)
+
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
@@ -235,30 +262,34 @@ def upvote_post(request, post_id):
         post.upvoteNumber = max(0, post.upvoteNumber - 1)
         post.upvoted_users.remove(utilizador)
         post.save()
-        return Response({"upvoteNumber": post.upvoteNumber, "upvoted": False}, status=200)
+        return Response(
+            {"upvoteNumber": post.upvoteNumber, "upvoted": False}, status=200
+        )
     # Caso contrário, adicionar upvote
     else:
         post.upvoteNumber += 1
         post.upvoted_users.add(utilizador)
         post.save()
-        return Response({"upvoteNumber": post.upvoteNumber, "upvoted": True}, status=200)
-    
+        return Response(
+            {"upvoteNumber": post.upvoteNumber, "upvoted": True}, status=200
+        )
+
 
 @api_view(["GET", "POST", "DELETE"])
-@permission_classes([AllowAny])  
+@permission_classes([AllowAny])
 def comentarios_post(request, post_id):
 
     if request.method == "GET":
-        comentarios = Comentarios.objects.filter(post_id=post_id).order_by('-data')
+        comentarios = Comentarios.objects.filter(post_id=post_id).order_by("-data")
         serializer = ComentariosSerializer(comentarios, many=True)
         return Response(serializer.data)
-    
+
     elif request.method == "POST":
         if not request.user.is_authenticated:
             return Response({"error": "Precisas de estar autenticado."}, status=401)
         data = request.data.copy()
         data["post"] = post_id
-       
+
         try:
             utilizador = Utilizador.objects.get(user=request.user)
             data["autor"] = utilizador.id
@@ -270,7 +301,7 @@ def comentarios_post(request, post_id):
             serializer.save()
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
-    
+
     elif request.method == "DELETE":
         comentario_id = request.data.get("comentario_id")
         if not comentario_id:
@@ -279,11 +310,65 @@ def comentarios_post(request, post_id):
             comentario = Comentarios.objects.get(id=comentario_id, post_id=post_id)
         except Comentarios.DoesNotExist:
             return Response({"error": "Comentário não encontrado."}, status=404)
-        
-        if request.user.is_authenticated and (request.user.is_staff or comentario.autor.user == request.user):
+
+        if request.user.is_authenticated and (
+            request.user.is_staff or comentario.autor.user == request.user
+        ):
             comentario.delete()
             return Response({"success": "Comentário apagado."}, status=204)
-    
+
+
+@api_view(["GET", "POST"])
+@permission_classes([IsAuthenticated])
+def vote_list(request):
+    if request.method == "GET":
+        votacoes = Votacao.objects.all().order_by("-id")
+        serializer = VotacaoSerializer(votacoes, many=True)
+        return Response(serializer.data)
+    if request.method == "POST":
+        if not request.user.userType == 2:
+            return Response(
+                {"error": "Apenas admins podem criar votações."}, status=403
+            )
+        data = request.data
+        opcoes = data.pop("opcoes", [])
+        serializer = VotacaoSerializer(data=data)
+        if serializer.is_valid():
+            votacao = serializer.save()
+            for texto in opcoes:
+                Opcao.objects.create(votacao=votacao, texto=texto)
+            return Response(VotacaoSerializer(votacao).data, status=201)
+        return Response(serializer.errors, status=400)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def vote_view(request, post_id):
+    try:
+        votacao = Votacao.objects.get(id=post_id)
+    except Votacao.DoesNotExist:
+        return Response({"error": "Votação não encontrada."}, status=404)
+    serializer = VotacaoSerializer(votacao)
+    return Response(serializer.data)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def submit_vote(request, post_id):
+    try:
+        votacao = Votacao.objects.get(id=post_id)
+    except Votacao.DoesNotExist:
+        return Response({"error": "Votação não encontrada."}, status=404)
+    opcao_id = request.data.get("optionId")
+    try:
+        opcao = votacao.opcao_set.get(id=opcao_id)
+    except Opcao.DoesNotExist:
+        return Response({"error": "Opção inválida."}, status=400)
+    # Aqui podes guardar o voto do utilizador (ex: ManyToMany, ou só incrementar)
+    opcao.votos += 1
+    opcao.save()
+    return Response({"success": True})
+
 
 class LigaListView(generics.ListAPIView):
     queryset = Liga.objects.all()

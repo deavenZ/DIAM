@@ -55,6 +55,8 @@ export const userService = {
   }),
   getUser: () => api.get('/auth/user/'),
   getProfile: () => api.get('/profile/'),
+  getProfileByUsername: (username) => api.get(`/profile/${username}/`),
+  updateProfileByUsername: (username, data) => api.put(`/profile/${username}/`, data),
   updateProfile: (data) => {
     const formData = new FormData();
     for (const key in data) {

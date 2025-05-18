@@ -8,11 +8,22 @@ function Home() {
   const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [votes, setVotes] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     fetchPosts();
     fetchVotes();
-  }, []);
+    if (user) {
+      const userType = user.userType;
+      if (userType === 1 || userType === 2) {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+    } else {
+      setIsAdmin(false);
+    }
+  }, [user]);
 
   const fetchPosts = async () => {
     try {
@@ -100,9 +111,23 @@ function Home() {
       </div>
 
       <div className="voting-section">
-        <h2>Votações Ativas</h2>
+        <div className="votes-header">
+          <h2>Votações</h2>
+          {user && isAdmin && (
+            <Link to="/votes/new" className="new-post-button">
+              Criar Nova Votação
+            </Link>
+          )}
+        </div>
         <div className="votes-list">
-          {/* Implementa as votações aqui */}
+          {votes.map((vote) => (
+            <Link to={`/votes/${vote.id}`} key={vote.id} className="vote-card-link">
+              <div className="vote-card">
+                <h3>{vote.titulo}</h3>
+                <p>{vote.descricao}</p>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

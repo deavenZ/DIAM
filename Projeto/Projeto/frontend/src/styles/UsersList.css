@@ -1,47 +1,42 @@
-.users-list-container {
-    max-width: 700px;
-    margin: 2rem auto;
+.users-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
     background: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 12px #0001;
-    padding: 2rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.users-list-container h2 {
-    margin-bottom: 1.5rem;
-    color: #1a3a5d;
+.users-table th,
+.users-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
 }
 
-.users-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.users-table th {
+    background: #f6f7f8;
+    color: #2e7d32;
+    font-weight: 600;
 }
 
-.users-list li {
-    display: flex;
-    align-items: center;
-    gap: 1.2rem;
-    padding: 0.7rem 0;
-    border-bottom: 1px solid #e3e3e3;
-}
-
-.users-list li:last-child {
+.users-table tr:last-child td {
     border-bottom: none;
 }
 
-.users-list a {
-    color: #1a3a5d;
-    font-weight: 500;
-    text-decoration: none;
+.edit-link {
     margin-right: 1rem;
+    color: #1976d2;
+    text-decoration: none;
+    font-weight: 500;
 }
 
-.users-list a:hover {
+.edit-link:hover {
     text-decoration: underline;
 }
 
-.users-list button {
+.delete-btn {
     background: #e74c3c;
     color: #fff;
     border: none;
@@ -51,6 +46,6 @@
     transition: background 0.2s;
 }
 
-.users-list button:hover {
+.delete-btn:hover {
     background: #c0392b;
 }

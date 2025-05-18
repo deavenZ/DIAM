@@ -20,6 +20,7 @@ class UtilizadorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Utilizador
         fields = [
+            "id",
             "username",
             "nome",
             "email",
@@ -33,12 +34,21 @@ class UtilizadorSerializer(serializers.ModelSerializer):
 
 class ComentariosSerializer(serializers.ModelSerializer):
 
-    autor_username = serializers.CharField(source='autor.user.username', read_only=True)
-    autor_avatar = serializers.ImageField(source='autor.avatar', read_only=True)  
+    autor_username = serializers.CharField(source="autor.user.username", read_only=True)
+    autor_avatar = serializers.ImageField(source="autor.avatar", read_only=True)
 
     class Meta:
         model = Comentarios
-        fields = ["id", "autor", "autor_username", "autor_avatar", "data", "texto", "post", "likenumber"]
+        fields = [
+            "id",
+            "autor",
+            "autor_username",
+            "autor_avatar",
+            "data",
+            "texto",
+            "post",
+            "likenumber",
+        ]
 
 
 class ClubeSerializer(serializers.ModelSerializer):
@@ -58,10 +68,18 @@ class PostSerializer(serializers.ModelSerializer):
     clube = ClubeSerializer(read_only=True)
     liga = LigaSerializer(read_only=True)
     clube_id = serializers.PrimaryKeyRelatedField(
-        queryset=Clube.objects.all(), source='clube', write_only=True, required=False, allow_null=True
+        queryset=Clube.objects.all(),
+        source="clube",
+        write_only=True,
+        required=False,
+        allow_null=True,
     )
     liga_id = serializers.PrimaryKeyRelatedField(
-        queryset=Liga.objects.all(), source='liga', write_only=True, required=False, allow_null=True
+        queryset=Liga.objects.all(),
+        source="liga",
+        write_only=True,
+        required=False,
+        allow_null=True,
     )
     comentarios_count = serializers.SerializerMethodField()
 
@@ -69,11 +87,10 @@ class PostSerializer(serializers.ModelSerializer):
         return obj.comentarios_set.count()
 
     def get_upvoted(self, obj):
-        user = self.context['request'].user
+        user = self.context["request"].user
         if user.is_authenticated:
             return obj.upvoted_users.filter(id=user.utilizador.id).exists()
         return False
-
 
     class Meta:
         model = Post
@@ -85,7 +102,7 @@ class PostSerializer(serializers.ModelSerializer):
             "texto",
             "liga",
             "clube",
-            "liga_id",   # write_only
+            "liga_id",  # write_only
             "clube_id",  # write_only
             "upvoteNumber",
             "imagem",

@@ -130,11 +130,9 @@ function Profile() {
 
     try {
       await updateProfile(dataToSend);
-      const updatedProfile = await getProfileInfo();
-      setUser();
-      setIsEditing(false);
       await getProfile(); // Atualiza o perfil no frontend
       setPreviewUrl('');
+      setIsEditing(false); // <-- Só aqui, depois de tudo atualizado!
     } catch (err) {
       console.error('Erro ao atualizar perfil:', err);
     }

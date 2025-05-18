@@ -10,11 +10,17 @@ function UsersList() {
         userService.getAllUsers().then(res => setUsers(res.data));
     }, []);
 
+    useEffect(() => {
+        users.map(user => {
+            console.log("Utilizador:", user);
+        });
+    });
+
     const handleDelete = async (id) => {
         if (window.confirm("Tens a certeza que queres apagar este utilizador?")) {
             try {
                 await userService.deleteUser(id);
-                setUsers(users.filter(u => u.id !== id));
+                setUsers(users.filter(user => user.id !== id));
             } catch (err) {
                 alert("Erro ao apagar utilizador.");
             }
@@ -24,15 +30,28 @@ function UsersList() {
     return (
         <div className="users-list-container">
             <h2>Todos os Utilizadores</h2>
-            <ul className="users-list">
-                {users.map(u => (
-                    <li key={u.id}>
-                        <Link to={`/users/${u.id}`}>{u.username}</Link>
-                        <Link to={`/users/${u.id}/edit`}>Editar</Link>
-                        <button onClick={() => handleDelete(u.id)}>Apagar</button>
-                    </li>
-                ))}
-            </ul>
+            <table className="users-table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {users.map(user => (
+                        <tr key={user.id}>
+                            <td>
+                                <Link to={`/users/${user.username}`}>{user.username}</Link>
+                            </td>
+                            <td>{user.email}</td>
+                            <td>
+                                <button onClick={() => handleDelete(user.id)} className="delete-btn">Apagar</button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 }
