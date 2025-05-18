@@ -151,14 +151,11 @@ function Post() {
     }
   };
 
-  const isUpvoted = () => {
-    const upvotedPosts = JSON.parse(localStorage.getItem('upvotedPosts') || '[]');
-    return upvotedPosts.includes(Number(id));
-  };
+
 
   const handleUpvote = async () => {
     if (!user) {
-      navigate('/login'); // Redireciona para login
+      navigate('/login');
       return;
     }
     try {
@@ -166,16 +163,8 @@ function Post() {
       setPost(prev => ({
         ...prev,
         upvoteNumber: res.data.upvoteNumber,
+        upvoted: res.data.upvoted 
       }));
-
-      let upvotedPosts = JSON.parse(localStorage.getItem('upvotedPosts') || '[]');
-      if (res.data.upvoted) {
-        if (!upvotedPosts.includes(Number(id))) upvotedPosts.push(Number(id));
-      } else {
-        upvotedPosts = upvotedPosts.filter(pid => pid !== Number(id));
-      }
-      localStorage.setItem('upvotedPosts', JSON.stringify(upvotedPosts));
-      setForceUpdate(f => !f);
     } catch (err) {
       alert('Erro ao dar upvote.');
     }
@@ -301,7 +290,7 @@ function Post() {
                 src={
                   previewUrl
                     ? previewUrl
-                    : "http://127.0.0.1:8000" + formData.imagem
+                    : `http://localhost:8000${post.imagem}`
                 }
                 alt="imagem do post"
                 height="250px"
@@ -386,7 +375,7 @@ function Post() {
           </div>
           {post.imagem && (
             <img
-              src={"http://127.0.0.1:8000" + formData.imagem}
+              src={`http://localhost:8000${post.imagem}`}
               alt="imagem do post"
               className="post-image"
               height="250px"
@@ -402,7 +391,7 @@ function Post() {
           <div className="post-upvote" style={{ margin: '32px 0 16px 0', textAlign: 'center' }}>
             <button
               onClick={handleUpvote}
-              className={`upvote-button${user && isUpvoted() ? ' upvoted' : ''}`}
+              className={`upvote-button${post.upvoted ? ' upvoted' : ''}`}
             >
               ⬆️
               <span style={{ marginLeft: 16, fontWeight: 'bold', fontSize: 20 }}>
@@ -450,13 +439,17 @@ function Post() {
               onChange={e => setNovoComentario(e.target.value)}
               placeholder="Escreve o teu comentário..."
               rows={3}
+              disabled={isEditing || !id}
             />
             {comentarioErro && (
               <div className="comentario-erro">{comentarioErro}</div>
             )}
-            <button type="submit">Comentar</button>
+            <button type="submit" disabled={isEditing || !id}>
+              Comentar
+            </button>
           </form>
         )}
+        <br /> 
         <ul className="comentarios-list">
           {comentarios.map(com => (
             <li key={com.id}>

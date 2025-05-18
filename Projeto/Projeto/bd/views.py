@@ -208,6 +208,7 @@ def post_view(request, post_id):
                 {"error": "Post not found"}, status=status.HTTP_404_NOT_FOUND
             )
         
+        
     if request.method in ["PUT", "PATCH"]:
         post = Post.objects.get(id=post_id)
         serializer = PostSerializer(post, data=request.data, partial=True)
