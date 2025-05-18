@@ -388,6 +388,8 @@ function Post() {
             {post.texto}
           </div>
 
+          <br />
+          <br />
           <div className="post-upvote" style={{ margin: '32px 0 16px 0', textAlign: 'center' }}>
             <button
               onClick={handleUpvote}

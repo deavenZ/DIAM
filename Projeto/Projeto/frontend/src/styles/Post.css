@@ -173,9 +173,10 @@
 }
 
 .post-content {
-  color: #444;
-  line-height: 1.6;
-  margin-bottom: 4.5rem;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-line;
 }
 
 .post-actions {

@@ -90,7 +90,11 @@ function Home() {
                     </span>
                   ) : null}
                 </h3>
-                <p>{post.texto}</p>
+                <p>
+                  {post.texto && post.texto.length > 100
+                    ? post.texto.slice(0, 100) + "..."
+                    : post.texto}
+                </p>
                 <div className="post-meta">
                   <span className='author-meta'>
                     Por: {post.autor && post.autor.username ? post.autor.username : (post.autor || 'Desconhecido')}
