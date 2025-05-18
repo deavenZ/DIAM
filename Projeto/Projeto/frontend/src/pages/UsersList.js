@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 import { userService } from "../services/api";
 import '../styles/UsersList.css';
 
 function UsersList() {
+    const { user } = useAuth();
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -16,11 +18,11 @@ function UsersList() {
         });
     });
 
-    const handleDelete = async (id) => {
+    const handleDelete = async (username) => {
         if (window.confirm("Tens a certeza que queres apagar este utilizador?")) {
             try {
-                await userService.deleteUser(id);
-                setUsers(users.filter(user => user.id !== id));
+                await userService.deleteUser(username);
+                setUsers(users.filter(user => user.username !== username));
             } catch (err) {
                 alert("Erro ao apagar utilizador.");
             }
@@ -39,16 +41,16 @@ function UsersList() {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(user => (
-                        <tr key={user.id}>
+                    {users.map(u => (
+                        <tr key={u.id}>
                             <td>
-                                <Link to={`/users/${user.username}`}>{user.username}</Link>
+                                <Link to={`/users/${u.username}`}>{u.username}</Link>
                             </td>
-                            <td>{user.email}</td>
+                            <td>{u.email}</td>
                             <td>
-                                {(user.userType !== 1 && user.userType !== 2) ? (
+                                {(u.userType === 0 || (u.userType === 1 && user.is_superuser)) ? (
                                     <button
-                                        onClick={() => handleDelete(user.id)}
+                                        onClick={() => handleDelete(u.username)}
                                         className="delete-btn"
                                     >
                                         Apagar
