@@ -1,11 +1,17 @@
 .app-header {
-  background-color: rgba(193, 235, 193, 0.75);
+  background-color: rgb(209, 240, 209);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 0.5rem 0;
   position: sticky;
   top: 0;
   z-index: 1000;
   border-bottom: 2px solid var(--primary-green);
+}
+
+.app-header.admin-header {
+  background-color: var(--admin-bar);
+  border-bottom: 2px solid var(--primary-green);
+  color: #083021;
 }
 
 .nav-menu {
@@ -41,7 +47,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.3rem;
+  font-size: 1.15rem;
 }
 
 .nav-links a:hover,
@@ -53,10 +59,9 @@
 .username-label {
   display: inline-block;
   vertical-align: middle;
-  font-weight: 600;
-  color: #222;
+  font-weight: 500;
+  color: #083021;
   font-size: 1.15rem;
-  letter-spacing: 0.5px;
   padding: 0.35em 0.8em;
   border-radius: 16px;
   cursor: pointer;

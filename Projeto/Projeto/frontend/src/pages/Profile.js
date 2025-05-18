@@ -16,7 +16,7 @@ function Profile() {
   const [selectedLiga, setSelectedLiga] = useState('');
 
 
-  const { user, updateProfile, getProfileInfo, changePassword } = useAuth();
+  const { user, updateProfile, getProfileInfo, changePassword, setUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -130,8 +130,10 @@ function Profile() {
 
     try {
       await updateProfile(dataToSend);
-      await getProfile(); // Atualiza o perfil no frontend
+      const updatedProfile = await getProfileInfo();
+      setUser();
       setIsEditing(false);
+      await getProfile(); // Atualiza o perfil no frontend
       setPreviewUrl('');
     } catch (err) {
       console.error('Erro ao atualizar perfil:', err);

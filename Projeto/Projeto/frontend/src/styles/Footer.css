@@ -7,3 +7,9 @@
   border-top: 2px solid var(--primary-green);
   margin-top: 2rem;
 }
+
+.app-footer.admin-footer {
+  background-color: var(--admin-bar);
+  border-top: 2px solid var(--primary-green);
+  color: #1b5e20;
+}

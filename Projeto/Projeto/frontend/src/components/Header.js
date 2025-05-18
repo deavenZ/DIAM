@@ -9,6 +9,7 @@ function Header() {
 
   const [avatarUrl, setAvatarUrl] = useState('https://via.placeholder.com/150');
   const [username, setUsername] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const MEDIA_URL = 'http://localhost:8000';
 
@@ -17,8 +18,13 @@ function Header() {
       getProfileInfo().then((response) => {
         console.log('Profile response:', response);
         const avatar = response.avatar;
-        const username = response.username;
-        setUsername(username);
+        setUsername(response.username);
+        const userType = response.userType;
+        if (userType === 1 || userType === 2) {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+        }
         if (!avatar) {
           setAvatarUrl('https://via.placeholder.com/150');
         } else if (avatar.startsWith('http')) {
@@ -34,11 +40,12 @@ function Header() {
 
   const handleLogout = () => {
     logout();
+    setIsAdmin(false);
     navigate('/');
   };
 
   return (
-    <header className="app-header">
+    <header className={`app-header${isAdmin ? ' admin-header' : ''}`}>
       <nav className="nav-menu">
         <Link to="/" className="nav-logo">
           <img
@@ -50,9 +57,9 @@ function Header() {
         <div className="nav-links">
           {user ? (
             <>
-              {user?.is_staff && <Link to="/users">Utilizadores</Link>}
+              {isAdmin && <Link to="/users">Utilizadores</Link>}
               <Link to="/profile" className="profile-link">
-                <label className="username-label">{username}</label>
+                <label className="username-label">{isAdmin ? "Admin" : username}</label>
                 <img
                   src={avatarUrl}
                   alt="Foto do usuário"
@@ -71,7 +78,7 @@ function Header() {
           )}
         </div>
       </nav>
-    </header>
+    </ header>
   );
 }
 
